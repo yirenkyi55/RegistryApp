@@ -1,0 +1,11 @@
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\bin\Debug\RegistryLibrary.dll
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\bin\Debug\RegistryLibrary.pdb
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\obj\Debug\RegistryLibrary.csproj.CoreCompileInputs.cache
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\obj\Debug\RegistryLibrary.dll
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\obj\Debug\RegistryLibrary.pdb
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\bin\Debug\Dapper.dll
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\bin\Debug\Dapper.xml
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\obj\Debug\RegistryLibrary.csprojAssemblyReference.cache
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\obj\Debug\RegistryLibrary.csproj.CopyComplete
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\bin\Debug\FluentValidation.dll
+C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryLibrary\bin\Debug\FluentValidation.xml

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistryAppUI", "RegistryAppUI\RegistryAppUI.csproj", "{B4CC3464-1338-4113-9102-A075973E279A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistryLibrary", "RegistryLibrary\RegistryLibrary.csproj", "{44E98538-99B4-4277-92E7-B806DC353BE8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4CC3464-1338-4113-9102-A075973E279A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4CC3464-1338-4113-9102-A075973E279A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4CC3464-1338-4113-9102-A075973E279A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4CC3464-1338-4113-9102-A075973E279A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44E98538-99B4-4277-92E7-B806DC353BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44E98538-99B4-4277-92E7-B806DC353BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44E98538-99B4-4277-92E7-B806DC353BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44E98538-99B4-4277-92E7-B806DC353BE8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {254B301A-7DE4-4807-92FA-DAAFE0A538A0}
+	EndGlobalSection
+EndGlobal
