@@ -12,6 +12,9 @@ using RegistryLibrary.Data;
 using RegistryLibrary.Models;
 using System.Globalization;
 
+using RegistryAppUI.ViewModels;
+using RegistryLibrary.Infrastructure;
+
 namespace RegistryAppUI.UserControls
 {
     public partial class NewDepartment : UserControl
@@ -40,7 +43,7 @@ namespace RegistryAppUI.UserControls
                     DepartmentName = txtName.Text.Trim().ToLower()
                 };
 
-                if (txtEmail.Text.Trim()!=string.Empty )
+                if (txtEmail.Text.Trim() != string.Empty)
                 {
                     department.Email = txtEmail.Text.Trim();
                 }
@@ -52,6 +55,7 @@ namespace RegistryAppUI.UserControls
                 department.DepartmentName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(department.DepartmentName);
                 //Save department into the database
                 department = await _department.CreateDepartment(department);
+                Logger.WriteToFile(Logger.FullName, "successfully created new department");
                 MessageBox.Show($"{department.DepartmentName} has been successfully created", "Create", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 PopulateGrid();
                 btnReset_Click(this, null);
@@ -75,7 +79,47 @@ namespace RegistryAppUI.UserControls
                 errorProvider1.SetError(txtName, "Department Name is required");
                 isValid = false;
             }
+
+            if (txtEmail.Text.Trim() != string.Empty)
+            {
+                UserEmail email = new UserEmail()
+                {
+                    Email = txtEmail.Text.Trim()
+                };
+                UserMailsValidator validator = new UserMailsValidator();
+                var validate = validator.Validate(email);
+                if (!validate.IsValid)
+                {
+                    isValid = false;
+                    foreach (var error in validate.Errors)
+                    {
+                        errorProvider1.SetError(txtEmail, error.ErrorMessage);
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty(txtAddress.Text.Trim()))
+            {
+                errorProvider1.SetError(txtAddress, "Address is required");
+                isValid = false;
+            }
+
             return isValid;
+        }
+
+        private void txtName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+           ControlValidators.ValidateLength(txtName,e, 100);
+        }
+
+        private void txtEmail_KeyPress(object sender, KeyPressEventArgs e)
+        {
+          ControlValidators.ValidateLength(txtEmail, e,20);
+        }
+
+        private void txtAddress_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
         }
     }
 }

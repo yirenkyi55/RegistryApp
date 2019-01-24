@@ -10,6 +10,7 @@ using RegistryAppUI.Printer;
 using RegistryLibrary;
 using RegistryLibrary.Abstracts;
 using RegistryLibrary.Data;
+using RegistryLibrary.Infrastructure;
 using RegistryLibrary.Models;
 
 namespace RegistryAppUI
@@ -21,11 +22,14 @@ namespace RegistryAppUI
         public frmAllFiles()
         {
             InitializeComponent();
+            LoadAllFiles();
         }
         int pageNumber = 1;
         IPagedList<IncomingFileModel> list;
-        DataGrids gridData = new DataGrids();
-        List<IncomingFileModel> printerFiles = new List<IncomingFileModel>();
+        List<IncomingFileModel> printList = new List<IncomingFileModel>();
+        List<IncomingFileModel> files = new List<IncomingFileModel>();
+       DataGrids gridData = new DataGrids();
+        //List<IncomingFileModel> printerFiles = new List<IncomingFileModel>();
         IIncomingFileData fileData = new IncomingFileData();
 
         private async Task PopulateGrid(List<IncomingFileModel> myResults)
@@ -55,18 +59,24 @@ namespace RegistryAppUI
 
         private void FormatGrid()
         {
-            if (gridFiles.Rows.Count>0)
+            if (gridFiles.Rows.Count > 0)
             {
                 gridFiles.Columns[0].Visible = false;
             }
         }
 
+        private void LoadAllFiles()
+        {
+           files = fileData.SelectAllFiles().ToList();
+            lblTotalFiles.Text = $"TOTAL RECORDS WITH PDF FILE: {files.Where(f => f.FileName != null).Count()}";
+            lblRegisteredFiles.Text = $"TOTAL REGISTERED RECORDS: {files.Count()}";
+        }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-                
+
 
         private async void btnNext_Click(object sender, EventArgs e)
         {
@@ -122,20 +132,47 @@ namespace RegistryAppUI
                 dtpSearch.Visible = false;
                 txtSearch.Focus();
             }
+
+            if (cboSearch.SelectedIndex == 5 || cboSearch.SelectedIndex == 6)
+            {
+                txtSearch.Text = "";
+                txtSearch.Enabled = false;
+                dtpSearch.Enabled = false;
+            }
+            else
+            {
+                txtSearch.Enabled = true;
+                dtpSearch.Enabled = true;
+            }
         }
 
         private async void btnSearch_Click(object sender, EventArgs e)
         {
+            errorProvider1.Clear();
+            LoadAllFiles();
+
+            if (cboSearch.SelectedIndex==6 || cboSearch.SelectedIndex==7)
+            {
+                //Do some stuffs over here
+                var myResults = fileData.SearchForFile(files, null, (SearchCriteria)cboSearch.SelectedIndex);
+                if (myResults.Count > 0)
+                {
+                    await PopulateGrid(myResults);
+                }
+                
+                return;
+            }
+
             if (list.ToList().Count > 0)
             {
-                if (txtSearch.Visible)
+                if (txtSearch.Visible )
                 {
                     if (txtSearch.Text.Trim() != string.Empty)
                     {
 
                         try
                         {
-                            var myResults = fileData.SearchForFile(list.ToList(), txtSearch.Text.Trim(), (SearchCriteria)cboSearch.SelectedIndex);
+                            var myResults = fileData.SearchForFile(files.ToList(), txtSearch.Text.Trim(), (SearchCriteria)cboSearch.SelectedIndex);
                             if (myResults.Count > 0)
                             {
                                 await PopulateGrid(myResults);
@@ -152,7 +189,7 @@ namespace RegistryAppUI
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK , MessageBoxIcon.Error);
+                            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     else
@@ -166,7 +203,7 @@ namespace RegistryAppUI
                     //Search by date
                     string search = dtpSearch.Value.Date.ToString();
                     //MessageBox.Show(dtpSearch.Value.Date.ToString("dd/MM/yyyy"));
-                    var myResults = fileData.SearchForFile(list.ToList(), search, (SearchCriteria)cboSearch.SelectedIndex);
+                    var myResults = fileData.SearchForFile(files, search, (SearchCriteria)cboSearch.SelectedIndex);
                     if (myResults.Count > 0)
                     {
                         await PopulateGrid(myResults);
@@ -204,15 +241,16 @@ namespace RegistryAppUI
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            printerFiles = list.ToList();
+            printList = fileData.SelectAllFiles().ToList();
             //Create the printdocument and attach an event handler
-            PrintDocument doc = new FilesDocument(printerFiles);
+            PrintDocument doc = new FilesDocument(printList);
             doc.PrintPage += Doc_PrintPage;
             PrintDialog dlgSettings = new PrintDialog();
             dlgSettings.Document = doc;
             if (dlgSettings.ShowDialog() == DialogResult.OK)
             {
                 doc.Print();
+                Logger.WriteToFile(Logger.FullName, "printed a file");
             }
         }
 
@@ -225,18 +263,28 @@ namespace RegistryAppUI
 
         private void btnModify_Click(object sender, EventArgs e)
         {
-            if (gridFiles.Rows.Count > 0)
+            try
             {
-                //Find the selected id
-                int selectedId = int.Parse(gridFiles.SelectedRows[0].Cells[0].Value.ToString());
-                //Find the selected row
-                var selectedFile = list.First(x => x.Id == selectedId);
-                //Modify the file
-                frmFile frm = new frmFile();
-                frm.selectedFileToUpdate = selectedFile;
-                frm.PopulateControls(frm.selectedFileToUpdate);                
-                frm.Show();
-                this.Close();
+                if (gridFiles.Rows.Count > 0)
+                {
+                    //Find the selected id
+                    int selectedId = int.Parse(gridFiles.SelectedRows[0].Cells[0].Value.ToString());
+                    //Find the selected row
+                    var selectedFile = list.First(x => x.Id == selectedId);
+                    //Modify the file
+                    frmFile frm = new frmFile();
+                    frm.selectedFileToUpdate = selectedFile;
+                    frm.PopulateControls(frm.selectedFileToUpdate);
+                    this.Hide();
+                    frm.BringToFront();
+                    frm.ShowDialog();
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show($"Sorry an error occured.\n {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -252,8 +300,73 @@ namespace RegistryAppUI
                     var selectedFile = list.First(x => x.Id == selectedId);
                     //Delete the file
                     await fileData.DeleteFile(selectedFile);
+                    LoadAllFiles();
+                    await ResetGrid();
+                    Logger.WriteToFile(Logger.FullName, "deleted a file");
                     MessageBox.Show("File Record has been successfully deleted");
                 }
+            }
+        }
+
+        private async void btnDeleteAllFiles_Click(object sender, EventArgs e)
+        {
+            if (gridFiles.Rows.Count > 0)
+            {
+                if (MessageBox.Show("Are you sure you want to delete all file records?", "Delete All Files", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    await fileData.DeleteAllFile();
+                    LoadAllFiles();
+                    await ResetGrid();
+                    Logger.WriteToFile(Logger.FullName, "deleted all files");
+                    MessageBox.Show("File Record has been successfully deleted");
+                }
+            }
+        }
+
+        private void btnViewPdf_Click(object sender, EventArgs e)
+        {
+            if (gridFiles.Rows.Count > 0)
+            {
+                //Find the selected id
+                int selectedId = int.Parse(gridFiles.SelectedRows[0].Cells[0].Value.ToString());
+                //Find the selected row
+                var selectedFile = list.First(x => x.Id == selectedId);
+                if (selectedFile.FileName != null)
+                {
+                    //View the file
+                    FileSettings fileSettings = new FileSettings();
+                    fileSettings.FileName = selectedFile.FileName;
+                    frmUpdatePdf updatePdf = new frmUpdatePdf(fileSettings, true);
+                    updatePdf.ShowDialog();
+                }
+
+            }
+        }
+
+        private void gridFiles_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gridFiles.Rows.Count > 0)
+                {
+                    //Find the selected id
+                    int selectedId = int.Parse(gridFiles.SelectedRows[0].Cells[0].Value.ToString());
+                    //Find the selected row
+                    var selectedFile = list.First(x => x.Id == selectedId);
+                    if (selectedFile.FileName != null)
+                    {
+                        btnViewPdf.Visible = true;
+                    }
+                    else
+                    {
+                        btnViewPdf.Visible = false;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+
             }
         }
     }

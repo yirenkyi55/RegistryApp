@@ -13,6 +13,7 @@ using RegistryLibrary.Validation;
 using FluentValidation.Results;
 using RegistryLibrary.Abstracts;
 using RegistryLibrary.Data;
+using RegistryLibrary.Infrastructure;
 
 namespace RegistryAppUI
 {
@@ -34,6 +35,7 @@ namespace RegistryAppUI
             txtUsername.Text = "";
             txtPassword.Text = "";
             txtConfirmPassword.Text = "";
+            txtFullName.Text = "";
             txtAnswer.Text = "";
             cboAccessType.SelectedIndex = -1;
             cboQuestion.SelectedIndex = -1;
@@ -63,6 +65,11 @@ namespace RegistryAppUI
                     if (error.PropertyName == "Name")
                     {
                         errorProvider1.SetError(txtUsername, error.ErrorMessage);
+                    }
+
+                    if (error.PropertyName == "FullName")
+                    {
+                        errorProvider1.SetError(txtFullName, error.ErrorMessage);
                     }
 
                     if (error.PropertyName == "Password")
@@ -115,6 +122,7 @@ namespace RegistryAppUI
                 Password = txtPassword.Text,
                 AccessType = cboAccessType.Text,
                 Answer = txtAnswer.Text.Trim().ToLower(),
+                FullName = txtFullName.Text.Trim().ToLower(),
                 Question = cboQuestion.SelectedIndex + 1
             };
 
@@ -125,22 +133,36 @@ namespace RegistryAppUI
         {
             if (IsValidControls())
             {
-                //Save user to the database
-                UserModel oUser = GetUser();
-                //check if the user name already exist.
-                if (await user.SelectUser(oUser.Name) == null)
+                try
                 {
-                    await user.CreateUser(oUser);
-                }
 
-                else
+                    //Save user to the database
+                    UserModel oUser = GetUser();
+                    //check if the user name already exist.
+                    if (await user.SelectUser(oUser.Name) == null)
+                    {
+                        await user.CreateUser(oUser);
+                    }
+
+                    else
+                    {
+                        MessageBox.Show("User name already exist. Choose a different user name.", "User name exist", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    if (Logger.FullName != null)
+                    {
+                        Logger.WriteToFile(Logger.FullName, $"Created a new user: {oUser.Name}");
+                    }
+                    MessageBox.Show("A new user has been successfully created", "Create User", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await ResetControls();
+                    this.Close();
+                }
+                catch (Exception ex)
                 {
-                    MessageBox.Show("User name already exist. Choose a different user name.", "User name exist", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
 
-                MessageBox.Show("A new user has been successfully created", "Create User", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                await ResetControls();
+                    MessageBox.Show($"Sorry an error occured. \n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -153,6 +175,16 @@ namespace RegistryAppUI
         {
             frmAllUsers frmAll = new frmAllUsers();
             frmAll.ShowDialog();
+        }
+
+        private void txtFullName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ControlValidators.ValidateLength(txtFullName, e, 150);
+        }
+
+        private void txtUsername_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ControlValidators.ValidateLength(txtUsername, e, 100);
         }
     }
 }

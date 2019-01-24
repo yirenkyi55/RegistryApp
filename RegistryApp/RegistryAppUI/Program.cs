@@ -8,7 +8,7 @@ namespace RegistryAppUI
 {
     static class Program
     {
-        /// <summary>
+        /// <summary>C:\Users\FuncTionZ\source\repos\RegistryApp\RegistryAppUI\Program.cs
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
@@ -16,7 +16,7 @@ namespace RegistryAppUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmLogin());
+            Application.Run(new frmStartup());
 
         }
     }

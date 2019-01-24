@@ -188,6 +188,12 @@ namespace RegistryLibrary.Data
             switch (criteria)
             {
                 case SearchCriteria.RegistryNumber:
+
+                    if (search.ToLower().Contains("tma-reg-"))
+                    {
+                        search = search.Split('-')[2];
+                    }
+
                     int registryNumber = 0;
                     if (int.TryParse(search, out registryNumber))
                     {
@@ -197,23 +203,28 @@ namespace RegistryLibrary.Data
                     }
                     else
                     {
+                        string columnFormat = "tma-reg-";
+                        if (columnFormat.Contains(search.ToLower()))
+                        {
+                            return files.ToList();
+                        }
+
                         throw new ArgumentException("Invalid Registry Number. Please provide a number");
                     }
                 case SearchCriteria.PersonSent:
-                    var personResults = files.Where(f => f.PersonSent.ToLower().StartsWith(search.ToLower()) || f.PersonSent.ToLower().Contains(search.ToLower()));
-                    return personResults.ToList();
+                    return files.Where(f => f.PersonSent.ToLower().StartsWith(search.ToLower()) || f.PersonSent.ToLower().Contains(search.ToLower())).ToList();           
                 case SearchCriteria.DateReceived:
-                    var dateResults = files.Where(f => f.DateReceived.Date.ToString().Contains(search));
-                    return dateResults.ToList();
+                    return files.Where(f => f.DateReceived.Date.ToString().Contains(search)).ToList();                
                 case SearchCriteria.DepartmentTo:
-                    var departmentSearch = files.Where(f => f.Department.DepartmentName.ToLower().StartsWith(search.ToLower()) || f.Department.DepartmentName.ToLower().Contains(search.ToLower()));
-                    return departmentSearch.ToList();
+                    return files.Where(f => f.Department.DepartmentName.ToLower().StartsWith(search.ToLower()) || f.Department.DepartmentName.ToLower().Contains(search.ToLower())).ToList();                   
                 case SearchCriteria.Remarks:
-                    var remarksSearch = files.Where(f => f.Remarks != null && f.Remarks.ToLower().Contains(search));
-                    return remarksSearch.ToList();
+                    return files.Where(f => f.Remarks != null && f.Remarks.ToLower().Contains(search)).ToList();                    
                 case SearchCriteria.FileName:
-                    var fileNameResults = files.Where(f => f.FileName != null && (f.FileName.ToLower().StartsWith(search.ToLower()) || f.FileName.ToLower().Contains(search.ToLower())));
-                    return fileNameResults.ToList();
+                    return files.Where(f => f.FileName != null && (f.FileName.ToLower().StartsWith(search.ToLower()) || f.FileName.ToLower().Contains(search.ToLower()))).ToList();                   
+                case SearchCriteria.RecordsWithFiles:
+                    return files.Where(f => f.FileName != null).ToList();
+                case SearchCriteria.RecordsWithNoFiles:
+                    return files.Where(f => f.FileName == null).ToList();
                 default:
                     return new List<IncomingFileModel>();
             }

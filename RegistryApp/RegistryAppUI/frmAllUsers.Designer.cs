@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAllUsers));
             this.header = new Bunifu.Framework.UI.BunifuCards();
             this.lblModify = new System.Windows.Forms.Label();
             this.btnClose = new Bunifu.Framework.UI.BunifuImageButton();
@@ -36,13 +37,13 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.bunifuDragControl1 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
+            this.cboAccess = new MetroFramework.Controls.MetroComboBox();
+            this.btnChangeType = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.lsvUsers = new System.Windows.Forms.ListView();
             this.UserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.cboAccess = new MetroFramework.Controls.MetroComboBox();
-            this.btnChangeType = new System.Windows.Forms.Button();
+            this.bunifuDragControl1 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             this.panel1.SuspendLayout();
@@ -130,54 +131,6 @@
             this.panel1.Size = new System.Drawing.Size(623, 366);
             this.panel1.TabIndex = 33;
             // 
-            // bunifuDragControl1
-            // 
-            this.bunifuDragControl1.Fixed = true;
-            this.bunifuDragControl1.Horizontal = true;
-            this.bunifuDragControl1.TargetControl = this.header;
-            this.bunifuDragControl1.Vertical = true;
-            // 
-            // lsvUsers
-            // 
-            this.lsvUsers.BackColor = System.Drawing.Color.White;
-            this.lsvUsers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.UserName,
-            this.columnHeader1});
-            this.lsvUsers.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lsvUsers.FullRowSelect = true;
-            this.lsvUsers.Location = new System.Drawing.Point(0, 63);
-            this.lsvUsers.Name = "lsvUsers";
-            this.lsvUsers.Size = new System.Drawing.Size(623, 303);
-            this.lsvUsers.TabIndex = 0;
-            this.lsvUsers.UseCompatibleStateImageBehavior = false;
-            this.lsvUsers.View = System.Windows.Forms.View.Details;
-            this.lsvUsers.SelectedIndexChanged += new System.EventHandler(this.lsvUsers_SelectedIndexChanged);
-            // 
-            // UserName
-            // 
-            this.UserName.Text = "User Name";
-            this.UserName.Width = 278;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Access Level";
-            this.columnHeader1.Width = 237;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
-            this.btnDelete.Enabled = false;
-            this.btnDelete.FlatAppearance.BorderSize = 0;
-            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(507, 19);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(107, 29);
-            this.btnDelete.TabIndex = 1;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = false;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
             // cboAccess
             // 
             this.cboAccess.FormattingEnabled = true;
@@ -207,6 +160,54 @@
             this.btnChangeType.UseVisualStyleBackColor = false;
             this.btnChangeType.Click += new System.EventHandler(this.btnChangeType_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
+            this.btnDelete.Enabled = false;
+            this.btnDelete.FlatAppearance.BorderSize = 0;
+            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelete.ForeColor = System.Drawing.Color.White;
+            this.btnDelete.Location = new System.Drawing.Point(507, 19);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(107, 29);
+            this.btnDelete.TabIndex = 1;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = false;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // lsvUsers
+            // 
+            this.lsvUsers.BackColor = System.Drawing.Color.White;
+            this.lsvUsers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.UserName,
+            this.columnHeader1});
+            this.lsvUsers.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lsvUsers.FullRowSelect = true;
+            this.lsvUsers.Location = new System.Drawing.Point(0, 63);
+            this.lsvUsers.Name = "lsvUsers";
+            this.lsvUsers.Size = new System.Drawing.Size(623, 303);
+            this.lsvUsers.TabIndex = 0;
+            this.lsvUsers.UseCompatibleStateImageBehavior = false;
+            this.lsvUsers.View = System.Windows.Forms.View.Details;
+            this.lsvUsers.SelectedIndexChanged += new System.EventHandler(this.lsvUsers_SelectedIndexChanged);
+            // 
+            // UserName
+            // 
+            this.UserName.Text = "User Name";
+            this.UserName.Width = 278;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Access Level";
+            this.columnHeader1.Width = 237;
+            // 
+            // bunifuDragControl1
+            // 
+            this.bunifuDragControl1.Fixed = true;
+            this.bunifuDragControl1.Horizontal = true;
+            this.bunifuDragControl1.TargetControl = this.header;
+            this.bunifuDragControl1.Vertical = true;
+            // 
             // frmAllUsers
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -219,6 +220,7 @@
             this.Controls.Add(this.header);
             this.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmAllUsers";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAllUsers";

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmRegistryInfo));
             this.bunifuDragControl1 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.header = new Bunifu.Framework.UI.BunifuCards();
             this.lblModify = new System.Windows.Forms.Label();
@@ -399,11 +400,11 @@
             // 
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.label10.Location = new System.Drawing.Point(565, 29);
+            this.label10.Location = new System.Drawing.Point(537, 29);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(38, 17);
+            this.label10.Size = new System.Drawing.Size(92, 17);
             this.label10.TabIndex = 8;
-            this.label10.Text = "Logo";
+            this.label10.Text = "Logo (80 x 80)";
             // 
             // label7
             // 
@@ -447,6 +448,7 @@
             this.Controls.Add(this.header);
             this.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "frmRegistryInfo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

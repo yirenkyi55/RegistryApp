@@ -40,6 +40,7 @@
             this.btnAddFile = new Bunifu.Framework.UI.BunifuThinButton2();
             this.btnBrowse = new Bunifu.Framework.UI.BunifuImageButton();
             this.axAcroPDF1 = new AxAcroPDFLib.AxAcroPDF();
+            this.btnDone = new System.Windows.Forms.Button();
             this.header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             this.panel1.SuspendLayout();
@@ -104,6 +105,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnDone);
             this.panel1.Controls.Add(this.lblFileName);
             this.panel1.Controls.Add(this.btnAddFile);
             this.panel1.Controls.Add(this.btnBrowse);
@@ -116,9 +118,9 @@
             // lblFileName
             // 
             this.lblFileName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFileName.Location = new System.Drawing.Point(391, 30);
+            this.lblFileName.Location = new System.Drawing.Point(421, 32);
             this.lblFileName.Name = "lblFileName";
-            this.lblFileName.Size = new System.Drawing.Size(342, 24);
+            this.lblFileName.Size = new System.Drawing.Size(315, 24);
             this.lblFileName.TabIndex = 26;
             this.lblFileName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -141,10 +143,10 @@
             this.btnAddFile.IdleFillColor = System.Drawing.Color.White;
             this.btnAddFile.IdleForecolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             this.btnAddFile.IdleLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.btnAddFile.Location = new System.Drawing.Point(117, 22);
+            this.btnAddFile.Location = new System.Drawing.Point(117, 21);
             this.btnAddFile.Margin = new System.Windows.Forms.Padding(5);
             this.btnAddFile.Name = "btnAddFile";
-            this.btnAddFile.Size = new System.Drawing.Size(156, 34);
+            this.btnAddFile.Size = new System.Drawing.Size(156, 42);
             this.btnAddFile.TabIndex = 25;
             this.btnAddFile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnAddFile.Click += new System.EventHandler(this.btnAddFile_Click);
@@ -174,6 +176,23 @@
             this.axAcroPDF1.Size = new System.Drawing.Size(746, 443);
             this.axAcroPDF1.TabIndex = 27;
             // 
+            // btnDone
+            // 
+            this.btnDone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDone.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnDone.FlatAppearance.BorderSize = 0;
+            this.btnDone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDone.Font = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDone.ForeColor = System.Drawing.Color.White;
+            this.btnDone.Location = new System.Drawing.Point(609, 32);
+            this.btnDone.Name = "btnDone";
+            this.btnDone.Size = new System.Drawing.Size(134, 30);
+            this.btnDone.TabIndex = 27;
+            this.btnDone.Text = "Done";
+            this.btnDone.UseVisualStyleBackColor = false;
+            this.btnDone.Visible = false;
+            this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
+            // 
             // frmUpdatePdf
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -184,6 +203,7 @@
             this.Controls.Add(this.axAcroPDF1);
             this.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmUpdatePdf";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -211,5 +231,6 @@
         private Bunifu.Framework.UI.BunifuThinButton2 btnAddFile;
         private Bunifu.Framework.UI.BunifuImageButton btnBrowse;
         private AxAcroPDFLib.AxAcroPDF axAcroPDF1;
+        private System.Windows.Forms.Button btnDone;
     }
 }

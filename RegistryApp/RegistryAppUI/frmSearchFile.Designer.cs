@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSearchFile));
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.bunifuDragControl1 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.header = new Bunifu.Framework.UI.BunifuCards();
@@ -47,7 +49,7 @@
             this.cboSearch = new MetroFramework.Controls.MetroComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.gridFiles = new Bunifu.Framework.UI.BunifuCustomDataGrid();
+            this.gridFiles = new System.Windows.Forms.DataGridView();
             this.lblPageNumber = new System.Windows.Forms.Label();
             this.btnNext = new System.Windows.Forms.Button();
             this.btnPrevious = new System.Windows.Forms.Button();
@@ -86,7 +88,7 @@
             this.header.Name = "header";
             this.header.RightSahddow = true;
             this.header.ShadowDepth = 20;
-            this.header.Size = new System.Drawing.Size(863, 45);
+            this.header.Size = new System.Drawing.Size(873, 45);
             this.header.TabIndex = 35;
             // 
             // lblModify
@@ -96,16 +98,16 @@
             this.lblModify.ForeColor = System.Drawing.Color.White;
             this.lblModify.Location = new System.Drawing.Point(11, 17);
             this.lblModify.Name = "lblModify";
-            this.lblModify.Size = new System.Drawing.Size(122, 16);
+            this.lblModify.Size = new System.Drawing.Size(89, 16);
             this.lblModify.TabIndex = 2;
-            this.lblModify.Text = "All Received Files";
+            this.lblModify.Text = "Include Files";
             // 
             // btnClose
             // 
             this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             this.btnClose.Image = global::RegistryAppUI.Properties.Resources.Shutdown_;
             this.btnClose.ImageActive = null;
-            this.btnClose.Location = new System.Drawing.Point(831, 12);
+            this.btnClose.Location = new System.Drawing.Point(838, 10);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(29, 27);
             this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -127,9 +129,9 @@
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel4.Location = new System.Drawing.Point(863, 0);
+            this.panel4.Location = new System.Drawing.Point(863, 45);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(10, 568);
+            this.panel4.Size = new System.Drawing.Size(10, 523);
             this.panel4.TabIndex = 37;
             // 
             // panel5
@@ -159,7 +161,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(10, 45);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(853, 523);
+            this.panel1.Size = new System.Drawing.Size(863, 523);
             this.panel1.TabIndex = 39;
             // 
             // btnRefresh
@@ -249,31 +251,42 @@
             // 
             this.gridFiles.AllowUserToAddRows = false;
             this.gridFiles.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.gridFiles.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.gridFiles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.gridFiles.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllHeaders;
+            this.gridFiles.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.gridFiles.BackgroundColor = System.Drawing.Color.White;
-            this.gridFiles.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.gridFiles.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.gridFiles.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(40)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridFiles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.gridFiles.ColumnHeadersHeight = 30;
+            this.gridFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.gridFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridFiles.EnableHeadersVisualStyles = false;
+            this.gridFiles.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.gridFiles.Location = new System.Drawing.Point(0, 0);
+            this.gridFiles.Name = "gridFiles";
+            this.gridFiles.ReadOnly = true;
+            this.gridFiles.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridFiles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.gridFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gridFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridFiles.DoubleBuffered = true;
-            this.gridFiles.EnableHeadersVisualStyles = false;
-            this.gridFiles.HeaderBgColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(48)))));
-            this.gridFiles.HeaderForeColor = System.Drawing.Color.White;
-            this.gridFiles.Location = new System.Drawing.Point(0, 0);
-            this.gridFiles.Name = "gridFiles";
-            this.gridFiles.ReadOnly = true;
-            this.gridFiles.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.gridFiles.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.gridFiles.RowHeadersWidth = 30;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
+            this.gridFiles.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.gridFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridFiles.Size = new System.Drawing.Size(850, 422);
             this.gridFiles.TabIndex = 1;
@@ -294,10 +307,10 @@
             this.btnNext.FlatAppearance.BorderSize = 0;
             this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNext.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNext.Image = global::RegistryAppUI.Properties.Resources.next;
-            this.btnNext.Location = new System.Drawing.Point(338, 487);
+            this.btnNext.Image = global::RegistryAppUI.Properties.Resources.right;
+            this.btnNext.Location = new System.Drawing.Point(338, 483);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(55, 21);
+            this.btnNext.Size = new System.Drawing.Size(55, 27);
             this.btnNext.TabIndex = 36;
             this.btnNext.UseVisualStyleBackColor = false;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
@@ -308,10 +321,10 @@
             this.btnPrevious.FlatAppearance.BorderSize = 0;
             this.btnPrevious.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPrevious.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrevious.Image = global::RegistryAppUI.Properties.Resources.backward;
-            this.btnPrevious.Location = new System.Drawing.Point(130, 485);
+            this.btnPrevious.Image = global::RegistryAppUI.Properties.Resources.left;
+            this.btnPrevious.Location = new System.Drawing.Point(130, 483);
             this.btnPrevious.Name = "btnPrevious";
-            this.btnPrevious.Size = new System.Drawing.Size(55, 21);
+            this.btnPrevious.Size = new System.Drawing.Size(55, 27);
             this.btnPrevious.TabIndex = 35;
             this.btnPrevious.UseVisualStyleBackColor = false;
             this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
@@ -337,7 +350,7 @@
             // 
             this.bunifuSeparator1.BackColor = System.Drawing.Color.Transparent;
             this.bunifuSeparator1.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.bunifuSeparator1.LineThickness = 5;
+            this.bunifuSeparator1.LineThickness = 12;
             this.bunifuSeparator1.Location = new System.Drawing.Point(3, 720);
             this.bunifuSeparator1.Margin = new System.Windows.Forms.Padding(6);
             this.bunifuSeparator1.Name = "bunifuSeparator1";
@@ -351,13 +364,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             this.ClientSize = new System.Drawing.Size(873, 578);
+            this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.header);
-            this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel5);
             this.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmSearchFile";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmSearchFile";
@@ -386,7 +400,6 @@
         private Bunifu.Framework.UI.BunifuDragControl bunifuDragControl1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private Bunifu.Framework.UI.BunifuCustomDataGrid gridFiles;
         private System.Windows.Forms.Label lblPageNumber;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnPrevious;
@@ -398,5 +411,6 @@
         private System.Windows.Forms.TextBox txtSearch;
         private MetroFramework.Controls.MetroComboBox cboSearch;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView gridFiles;
     }
 }

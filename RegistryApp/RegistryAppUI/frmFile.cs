@@ -1,4 +1,5 @@
-﻿using RegistryLibrary.Abstracts;
+﻿using RegistryLibrary;
+using RegistryLibrary.Abstracts;
 using RegistryLibrary.Data;
 using RegistryLibrary.Infrastructure;
 using RegistryLibrary.Models;
@@ -23,23 +24,23 @@ namespace RegistryAppUI
 
         private void RegistryNumber()
         {
-            if (_pdfSettings.ReadSettingsFromFile())
-            {
-                int registryNumber = _incomingFile.NextRegistryNumber();
-                txtRegistryNumber.Text = registryNumber.ToString("");
-                txtRegistryNumber.Enabled = false;
-                switchGenerateReg.Value = true;
-                dtpDateReceived.Focus();
+            //if (_pdfSettings.ReadSettingsFromFile(WriteToText.Settings))
+            //{
+            int registryNumber = _incomingFile.NextRegistryNumber();
+            txtRegistryNumber.Text = "TMA-REG-" + registryNumber.ToString("D3");
+            txtRegistryNumber.Enabled = false;
+            switchGenerateReg.Value = true;
+            dtpDateReceived.Focus();
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
 
-                txtRegistryNumber.Enabled = true;
-                txtRegistryNumber.Text = "";
-                switchGenerateReg.Value = false;
-                txtRegistryNumber.Focus();
-            }
+            //    txtRegistryNumber.Enabled = true;
+            //    txtRegistryNumber.Text = "";
+            //    switchGenerateReg.Value = false;
+            //    txtRegistryNumber.Focus();
+            //}
 
         }
         /// <summary>
@@ -48,7 +49,7 @@ namespace RegistryAppUI
         private void LoadAllFiles()
         {
             allFiles = new IncomingFileData().SelectAllFiles();
-
+            lblRegisteredFiles.Text = $"Total Registered Files: {allFiles.Count()}";
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace RegistryAppUI
 
         private void ResetControls()
         {
-
+            LoadAllFiles();
             dtpDateReceived.Value = DateTime.Now;
             txtFromDepartment.Text = "";
             txtPdfName.Text = "";
@@ -130,17 +131,33 @@ namespace RegistryAppUI
         {
             if (selectedFileToUpdate != null)
             {
-                _pdfSettings.FileName = selectedFileToUpdate.FileName;
-                _pdfSettings.GetSourceFilePathEvent += _pdfSettings_GetSourceFilePathEvent;
-                frmUpdatePdf frmUpdate = new frmUpdatePdf(_pdfSettings);
-                frmUpdate.ShowDialog();
+                try
+                {
+                    _pdfSettings.FileName = selectedFileToUpdate.FileName;
+                    _pdfSettings.GetSourceFilePathEvent += _pdfSettings_GetSourceFilePathEvent;
+                    frmUpdatePdf frmUpdate = new frmUpdatePdf(_pdfSettings);
+                    frmUpdate.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
-                _pdfSettings.FileName = txtPdfName?.Text;
-                _pdfSettings.GetSourceFilePathEvent += PdfSettings_GetSourceFilePathEvent;
-                frmAcceptPdf acceptPdf = new frmAcceptPdf(_pdfSettings);
-                acceptPdf.ShowDialog();
+                try
+                {
+                    _pdfSettings.FileName = txtPdfName?.Text;
+                    _pdfSettings.GetSourceFilePathEvent += PdfSettings_GetSourceFilePathEvent;
+                    frmAcceptPdf acceptPdf = new frmAcceptPdf(_pdfSettings);
+                    acceptPdf.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
         }
@@ -171,11 +188,13 @@ namespace RegistryAppUI
         {
             if (switchGenerateReg.Value)
             {
-                _pdfSettings.WriteSettingsToFile(true.ToString());
+                _pdfSettings.WriteSettingsToFile(true.ToString(), WriteToText.Settings);
+                txtReferenceNumber.Enabled = false;
             }
             else
             {
-                _pdfSettings.WriteSettingsToFile(false.ToString());
+                _pdfSettings.WriteSettingsToFile(false.ToString(), WriteToText.Settings);
+                txtReferenceNumber.Enabled = true;
             }
 
             RegistryNumber();
@@ -278,7 +297,7 @@ namespace RegistryAppUI
             }
             else
             {
-                return txtFileName.Text.Trim().ToLower()+".pdf";
+                return txtFileName.Text.Trim().ToLower() + ".pdf";
             }
 
         }
@@ -287,50 +306,70 @@ namespace RegistryAppUI
         {
             if (IsValidForm())
             {
-                string fileName = null;
-                if (txtPdfName.Text.Trim() != string.Empty)
+                try
                 {
-                    fileName = PdfName();
-                }
 
-                //Try to save pdf to folder
-                if (fileName != null)
-                {
-                    if (File.Exists(txtPdfName.Text.Trim()))
+                    string fileName = null;
+                    if (txtPdfName.Text.Trim() != string.Empty)
                     {
-                        _pdfSettings.CreateFile(fileName, txtPdfName.Text.Trim());
-
-                    }
-                    else
-                    {
-                        MessageBox.Show($"The pdf you want to save has been \n moved from the location {txtPdfName.Text.Trim()}\n Please check the file again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        fileName = PdfName();
                     }
 
+                    //Try to save pdf to folder
+                    if (fileName != null)
+                    {
+                        if (File.Exists(txtPdfName.Text.Trim()))
+                        {
+                            _pdfSettings.CreateFile(fileName, txtPdfName.Text.Trim());
+
+                        }
+                        else
+                        {
+                            MessageBox.Show($"The pdf you want to save has been \n moved from the location {txtPdfName.Text.Trim()}\n Please check the file again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                    }
+
+                    //Save the file to the database
+                    string[] regNo = txtRegistryNumber.Text.Split('-');
+
+                    IncomingFileModel fileModel = new IncomingFileModel()
+                    {
+
+                        RegistryNumber = int.Parse(regNo[2]),
+                        DateReceived = dtpDateReceived.Value,
+                        PersonSent = txtPersonSent.Text.Trim().ToLower(),
+                        DateOfLetter = dtpDateofLetter.Value,
+                        Subject = txtSubject.Text.Trim().ToLower(),
+                        DepartmentSent = txtFromDepartment.Text.Trim().ToLower(),
+                        Department = (DepartmentModel)cboDepartment.SelectedItem,
+                        FileName = fileName
+                    };
+
+                    MessageBox.Show(fileModel.RegistryNumber.ToString());
+                   
+                    if (txtReferenceNumber.Text.Trim() != string.Empty)
+                        fileModel.ReferenceNumber = txtReferenceNumber.Text.Trim();
+                    if (txtRemarks.Text.Trim() != string.Empty)
+                        fileModel.Remarks = txtRemarks.Text.Trim();
+                    //Save the file to the database
+                    await _incomingFile.CreateIncomingFile(fileModel);
+                    Logger.WriteToFile(Logger.FullName, "successfully registered a file");
+                    LoadAllFiles();
+                    ResetControls();
+                    if (MessageBox.Show("File information has been successfully saved.\n Do you want to perform another save?", "Save File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    {
+                        this.Close();
+                    }
+
+
                 }
-
-                //Save the file to the database
-                IncomingFileModel fileModel = new IncomingFileModel()
+                catch (Exception ex)
                 {
-                    RegistryNumber = int.Parse(txtRegistryNumber.Text.Trim()),
-                    DateReceived = dtpDateReceived.Value,
-                    PersonSent = txtPersonSent.Text.Trim().ToLower(),
-                    DateOfLetter = dtpDateofLetter.Value,
-                    Subject = txtSubject.Text.Trim().ToLower(),
-                    DepartmentSent = txtFromDepartment.Text.Trim().ToLower(),
-                    Department = (DepartmentModel)cboDepartment.SelectedItem,
-                    FileName = fileName
-                };
 
-                if (txtReferenceNumber.Text.Trim() != string.Empty)
-                    fileModel.ReferenceNumber = txtReferenceNumber.Text.Trim();
-                if (txtRemarks.Text.Trim() != string.Empty)
-                    fileModel.Remarks = txtRemarks.Text.Trim();
-                //Save the file to the database
-                await _incomingFile.CreateIncomingFile(fileModel);
-                MessageBox.Show("File information has been successfully saved", "Save File", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadAllFiles();
-                ResetControls();
+                    MessageBox.Show($"Sorry an error occured. \n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -529,12 +568,17 @@ namespace RegistryAppUI
                             selectedFileToUpdate.FileName = null;
                             _incomingFile.UpdateFile(selectedFileToUpdate);
                             txtPdfName.Text = "";
+                            Logger.WriteToFile(Logger.FullName, "Successfully deleted a file");
                             MessageBox.Show("File has been successfully deleted", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show($"Sorry an erorr occured while deleting file \n {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
+                    }
+                    else
+                    {
+                        chkRemoveFile.Checked = false;
                     }
 
                 }
@@ -561,67 +605,76 @@ namespace RegistryAppUI
 
                     if (MessageBox.Show("Are you sure you want to update this file", "Confirm Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        //***********************
-                        string fileName = null;
-                        //First check whether selectedfileToUpdate has a filename
-                        if (selectedFileToUpdate.FileName != null)
+                        try
                         {
-                            //Lets check whether the filename has changed
-                            if (selectedFileToUpdate.FileName == txtPdfName.Text)
+                            //***********************
+                            string fileName = null;
+                            //First check whether selectedfileToUpdate has a filename
+                            if (selectedFileToUpdate.FileName != null)
                             {
-                                //FileName has not been changed by the user
-                                fileName = selectedFileToUpdate.FileName;
-                            }
-                            else
-                            {
-                                //The File has been changed by the user. So try to delete the previous file and create the new file
-                                //Delete file from folder first
-                                _pdfSettings.FileName = selectedFileToUpdate.FileName;
-                                if (File.Exists(_pdfSettings.GetFileLocation()))
-                                    _pdfSettings.DeleteFile(selectedFileToUpdate.FileName);
-
-                                if (txtPdfName.Text.Trim() != string.Empty)
+                                //Lets check whether the filename has changed
+                                if (selectedFileToUpdate.FileName == txtPdfName.Text)
                                 {
-                                    //Generates a new filename for the file
-                                    fileName = PdfName();
+                                    //FileName has not been changed by the user
+                                    fileName = selectedFileToUpdate.FileName;
+                                }
+                                else
+                                {
+                                    //The File has been changed by the user. So try to delete the previous file and create the new file
+                                    //Delete file from folder first
+                                    _pdfSettings.FileName = selectedFileToUpdate.FileName;
+                                    if (File.Exists(_pdfSettings.GetFileLocation()))
+                                        _pdfSettings.DeleteFile(selectedFileToUpdate.FileName);
 
-                                    //Creates the file in the working folder
-                                    if (File.Exists(txtPdfName.Text.Trim()))
+                                    if (txtPdfName.Text.Trim() != string.Empty)
                                     {
-                                        _pdfSettings.CreateFile(fileName, txtPdfName.Text.Trim());
+                                        //Generates a new filename for the file
+                                        fileName = PdfName();
 
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show($"The pdf you want to update has been \n moved from the location {txtPdfName.Text.Trim()}\n Please check the file again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                        return;
+                                        //Creates the file in the working folder
+                                        if (File.Exists(txtPdfName.Text.Trim()))
+                                        {
+                                            _pdfSettings.CreateFile(fileName, txtPdfName.Text.Trim());
+
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show($"The pdf you want to update has been \n moved from the location {txtPdfName.Text.Trim()}\n Please check the file again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            return;
+                                        }
                                     }
                                 }
                             }
+
+
+
+                            //update the file to the database
+                            selectedFileToUpdate.RegistryNumber = int.Parse(txtRegistryNumber.Text.Trim());
+                            selectedFileToUpdate.DateReceived = dtpDateReceived.Value;
+                            selectedFileToUpdate.PersonSent = txtPersonSent.Text.Trim().ToLower();
+                            selectedFileToUpdate.DateOfLetter = dtpDateofLetter.Value;
+                            selectedFileToUpdate.Subject = txtSubject.Text.Trim().ToLower();
+                            selectedFileToUpdate.DepartmentSent = txtFromDepartment.Text.Trim().ToLower();
+                            selectedFileToUpdate.Department = (DepartmentModel)cboDepartment.SelectedItem;
+                            selectedFileToUpdate.FileName = fileName;
+
+                            if (txtReferenceNumber.Text.Trim() != string.Empty)
+                                selectedFileToUpdate.ReferenceNumber = txtReferenceNumber.Text.Trim();
+                            if (txtRemarks.Text.Trim() != string.Empty)
+                                selectedFileToUpdate.Remarks = txtRemarks.Text.Trim();
+                            //Update the file to the database
+                            await _incomingFile.UpdateFile(selectedFileToUpdate);
+                            Logger.WriteToFile(Logger.FullName, "successfully updated a file");
+                            MessageBox.Show("File information has been successfully updated", "Update File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LoadAllFiles();
+                            ResetControls();
+                            //**********************
                         }
+                        catch (Exception ex)
+                        {
 
-
-
-                        //update the file to the database
-                        selectedFileToUpdate.RegistryNumber = int.Parse(txtRegistryNumber.Text.Trim());
-                        selectedFileToUpdate.DateReceived = dtpDateReceived.Value;
-                        selectedFileToUpdate.PersonSent = txtPersonSent.Text.Trim().ToLower();
-                        selectedFileToUpdate.DateOfLetter = dtpDateofLetter.Value;
-                        selectedFileToUpdate.Subject = txtSubject.Text.Trim().ToLower();
-                        selectedFileToUpdate.DepartmentSent = txtFromDepartment.Text.Trim().ToLower();
-                        selectedFileToUpdate.Department = (DepartmentModel)cboDepartment.SelectedItem;
-                        selectedFileToUpdate.FileName = fileName;
-
-                        if (txtReferenceNumber.Text.Trim() != string.Empty)
-                            selectedFileToUpdate.ReferenceNumber = txtReferenceNumber.Text.Trim();
-                        if (txtRemarks.Text.Trim() != string.Empty)
-                            selectedFileToUpdate.Remarks = txtRemarks.Text.Trim();
-                        //Update the file to the database
-                        await _incomingFile.UpdateFile(selectedFileToUpdate);
-                        MessageBox.Show("File information has been successfully updated", "Update File", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LoadAllFiles();
-                        ResetControls();
-                        //********************** 
+                            MessageBox.Show($"Sorry an error occured. \n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
 
@@ -637,8 +690,12 @@ namespace RegistryAppUI
         private void btnDepartments_Click(object sender, EventArgs e)
         {
             frmAllFiles frm = new frmAllFiles();
-            frm.Show();
+            this.Hide();
+            frm.BringToFront();
+            frm.ShowDialog();
             this.Close();
+
+
         }
 
         private void frmFile_FormClosed(object sender, FormClosedEventArgs e)
@@ -695,6 +752,23 @@ namespace RegistryAppUI
             if (!char.IsNumber(e.KeyChar))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                linkLabel1.LinkVisited = true;
+                System.Diagnostics.Process.Start("https://jpg2pdf.com");
+
+                //frmBrowser frmBrowser = new frmBrowser("https://jpg2pdf.com");
+                //frmBrowser.ShowDialog();
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Unable to Visit website.");
             }
         }
     }

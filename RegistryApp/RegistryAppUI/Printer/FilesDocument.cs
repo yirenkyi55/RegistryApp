@@ -1,20 +1,28 @@
-﻿using RegistryLibrary.Models;
+﻿using RegistryLibrary.Abstracts;
+using RegistryLibrary.Data;
+using RegistryLibrary.Infrastructure;
+using RegistryLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RegistryAppUI.Printer
 {
     public class FilesDocument : PrintDocument
     {
+        RegistryInfoData registryData = new RegistryInfoData();
         private int PageNumber { get; set; } //Indicates the current page
         private int Offset { get; set; } //used to access the list of files
         private List<IncomingFileModel> _files { get; set; } //The files to be printed.
         private float lineHeight;//Used to move down one step.
+        float footerBegins;
+        bool printPageHeader = true;
 
         public FilesDocument(List<IncomingFileModel> files)
         {
@@ -30,10 +38,10 @@ namespace RegistryAppUI.Printer
 
             float pageWidth = e.MarginBounds.Width;
             SolidBrush blueBrush = new SolidBrush(Color.FromArgb(0, 122, 204));
-
-            string mainTitle = "TECHIMAN MUNICIPAL ASSEMBLY";
-            string addressTitle1 = "P.O.Box TM 1234. Techiman";
-            string addressTitle2 = "REGISTRY DEPARTMENT";
+            var info = registryData.GetRegistryInfoPrint();
+            string mainTitle = info?.MunicipalName.ToUpper() ?? "Municipal Name";
+            string addressTitle1 = info?.Address.ToUpper() ?? "Municipal Address";
+            string addressTitle2 = info?.RegistryName.ToUpper() ?? "Registry Name";
             string addressTitle3 = "ALL INCOMING FILES AS AT " + DateTime.Today.ToString("dd/MM/yyyy");
 
             //Determine the font to use
@@ -53,11 +61,56 @@ namespace RegistryAppUI.Printer
                     float xAddressTitle2 = leftMargin + (pageWidth - addressTitle2Width) / 2;
                     float xAddressTitle3 = leftMargin + (pageWidth - addressTitle3Width) / 2;
 
+                    List<float> titleWidths = new List<float>()
+                    {
+                        mainTitleWidth,addressTitle1Width,addressTitle2Width,addressTitle3Width
+                    };
+
+                    List<float> xtitleWidths = new List<float>()
+                    {
+                        xMainTitle,xAddressTitle1,xAddressTitle2,xAddressTitle3
+                    };
+
+                    float longestTitleWidth = titleWidths.Max();
+                    float longestxTitle = xtitleWidths.Max();
+                    //Draw the  various logo
+
+                    string coatPath = Application.StartupPath + @"\Image\" + "coat.png";
+                    Bitmap bmpCoat = new Bitmap(coatPath); /*Properties.Resources.coatPic;*/
+                    float imageWidth = bmpCoat.Width;
+                    float xImage =( leftMargin +  (pageWidth - longestTitleWidth) / 2)-(imageWidth+15);
+                    e.Graphics.DrawImage(bmpCoat, xImage, y);
+
+                    Image logoImage = null;
+
+                    if (info.PicData!=null)
+                    {
+                         logoImage = info.PicData.BinaryToImage();
+                    }
+
+                    if (logoImage==null)
+                    {
+                        string logoPath = Application.StartupPath + @"\Image\" + "reg.png";
+                        var bmpLogo = new Bitmap(logoPath); /*Properties.Resources.regPic;*/
+                        float logoWidth = bmpLogo.Width;
+                        float xLongEnd = longestTitleWidth + (pageWidth - longestTitleWidth) / 2;
+                        float xLogo = xLongEnd + (logoWidth + 15);
+                        e.Graphics.DrawImage(bmpLogo, xLogo, y);
+                    }
+                    else
+                    {
+                        float logoWidth = logoImage.Width;
+                        float xLongEnd = longestTitleWidth + (pageWidth - longestTitleWidth) / 2;
+                        float xLogo = xLongEnd + (logoWidth + 15);
+                        e.Graphics.DrawImage(logoImage, xLogo, y);
+                    }
+
                     //Draw all headers on the page and increse the line height
                     e.Graphics.DrawString(mainTitle, mainTitleFont, blueBrush, xMainTitle, y);
                     lineHeight = mainTitleFont.GetHeight(e.Graphics);
                     //Move down equivalent spacing of one line
                     y += lineHeight;
+
 
                     e.Graphics.DrawString(addressTitle1, subTitleFont, blueBrush, xAddressTitle1, y);
                     y += lineHeight;
@@ -82,7 +135,10 @@ namespace RegistryAppUI.Printer
         public void PrintFilesPage(PrintPageEventArgs e)
         {
 
-            PrintPageHeader(e);
+            if (printPageHeader)
+            {
+                PrintPageHeader(e); 
+            }
 
             SolidBrush blackBrush = new SolidBrush(Color.Black);
             SolidBrush blueBrush = new SolidBrush(Color.FromArgb(0, 122, 204));
@@ -94,43 +150,49 @@ namespace RegistryAppUI.Printer
                 float fontHeight = pageFont.GetHeight(e.Graphics);
 
                 //set the title for the pages
-                string No = "  ";
-                string regNo = "REG";
+                string No = "    ";
+                string regNo = "REG NUMBER";
                 string receivedDate = "REC DATE";
                 string personSent = "SENT BY";
-                string fileDate = "FILE DATE";
+               // string fileDate = "FILE DATE";
                 string refNo = "REF NUMBER";
                 string subject = "SUBJECT";
                 string from = "FROM";
                 string to = "DEPARTMENT";
                 string remarks = "REMARKS";
+                bool stopReading = false;
 
                 //Set all xpositions
                 float xNo = e.MarginBounds.Left;
-                float xRegNo = xNo + e.Graphics.MeasureString(No, pageFont).Width + 3;
-                float xReceivedDate = xRegNo + e.Graphics.MeasureString(regNo, pageFont).Width + 8;
-                float xPersonSent = xReceivedDate + e.Graphics.MeasureString(receivedDate, pageFont).Width + 8;
-                float xFileDate = xPersonSent + e.Graphics.MeasureString(personSent, pageFont).Width + 22;
-                float xRefNo = xFileDate + e.Graphics.MeasureString(fileDate, pageFont).Width + 8;
-                float xSubject = xRefNo + e.Graphics.MeasureString(refNo, pageFont).Width + 8;
+                float xRegNo = xNo + e.Graphics.MeasureString(No, pageFont).Width + 22;
+                float xReceivedDate = xRegNo + e.Graphics.MeasureString(regNo, pageFont).Width + 9;
+                float xPersonSent = xReceivedDate + e.Graphics.MeasureString(receivedDate, pageFont).Width + 9;
+                //float xFileDate = xPersonSent + e.Graphics.MeasureString(personSent, pageFont).Width + 22;
+                float xRefNo = xPersonSent + e.Graphics.MeasureString(personSent, pageFont).Width + 9;
+                float xSubject = xRefNo + e.Graphics.MeasureString(refNo, pageFont).Width + 9;
                 float xFrom = xSubject + e.Graphics.MeasureString(subject, pageFont).Width + 22;
                 float xTo = xFrom + e.Graphics.MeasureString(from, pageFont).Width + 22;
-                float xRemarks = xTo + e.Graphics.MeasureString(to, pageFont).Width + 8;
+                float xRemarks = xTo + e.Graphics.MeasureString(to, pageFont).Width + 9;
+                footerBegins = xTo;
 
                 //print all headers
                 //e.Graphics.DrawString(No, pageFont, blueBrush, xNo, y);
                 e.Graphics.DrawString(regNo, pageFont, blueBrush, xRegNo, y);
                 e.Graphics.DrawString(receivedDate, pageFont, blueBrush, xReceivedDate, y);
                 e.Graphics.DrawString(personSent, pageFont, blueBrush, xPersonSent, y);
-                e.Graphics.DrawString(fileDate, pageFont, blueBrush, xFileDate, y);
+                //e.Graphics.DrawString(fileDate, pageFont, blueBrush, xFileDate, y);
                 e.Graphics.DrawString(refNo, pageFont, blueBrush, xRefNo, y);
                 e.Graphics.DrawString(subject, pageFont, blueBrush, xSubject, y);
                 e.Graphics.DrawString(from, pageFont, blueBrush, xFrom, y);
                 e.Graphics.DrawString(to, pageFont, blueBrush, xTo, y);
                 e.Graphics.DrawString(remarks, pageFont, blueBrush, xRemarks, y);
 
-                //Move to the next line
-                y += fontHeight;
+                ////Move to the next line
+                //y += fontHeight;
+
+                ////Print a line
+                //e.Graphics.DrawLine(new Pen(blueBrush, 1), e.MarginBounds.Left, y, e.MarginBounds.Right, y);
+
 
                 //Draw a line
                 //e.Graphics.DrawLine(new Pen(blackBrush, 1), e.MarginBounds.Left, y, e.MarginBounds.Right, y);
@@ -140,30 +202,46 @@ namespace RegistryAppUI.Printer
                 //Increase the page number by one
                 PageNumber += 1; //First page
 
-                while (((y+lineHeight)<e.MarginBounds.Bottom) && Offset<= _files.Count-1)
+                while (((y + lineHeight) < e.MarginBounds.Bottom) && Offset <= _files.Count - 1)
                 {
                     //Define rectangles for appropriate fields
                     List<int> allRectHeights = new List<int>();//For all rectangle heights
 
+                    //Rectangle for the  Number
+                    RectangleF noRect = new RectangleF();
+                    float noRectWidth = xRegNo-xNo;
+                    noRect.Location = new Point((int)xNo, (int)y);
+                    noRect.Size = new Size((int)noRectWidth, (int)e.Graphics.MeasureString((Offset + 1 + ". ").ToString(), pageFont, (int)noRectWidth, StringFormat.GenericTypographic).Width);
+                    int noHeight = (int)e.Graphics.MeasureString((Offset + 1+ ". ").ToString(), pageFont, (int)noRectWidth, StringFormat.GenericTypographic).Height;
+                    allRectHeights.Add(noHeight);
+
+                    //Rectangle for the Registry Number
+                    RectangleF regNumberRect = new RectangleF();
+                    float regNumberRectWidth = xReceivedDate - xRegNo;
+                    regNumberRect.Location = new Point((int)xRegNo, (int)y);
+                    regNumberRect.Size = new Size((int)regNumberRectWidth, (int)e.Graphics.MeasureString("TMA-REG-" + _files[Offset].RegistryNumber.ToString("D3"), pageFont, (int)regNumberRectWidth, StringFormat.GenericTypographic).Width);
+                    int regNumberHeight = (int)e.Graphics.MeasureString("TMA-REG-" + _files[Offset].RegistryNumber.ToString("D3"), pageFont, (int)regNumberRectWidth, StringFormat.GenericTypographic).Height;
+                    allRectHeights.Add(regNumberHeight);
+
                     //Rectangle for the person sent
                     RectangleF personSentRect = new RectangleF();
-                    float personSentRectWidth = xFileDate - xPersonSent - 2;
-                    personSentRect.Location = new Point((int)xPersonSent, (int)y);                    
+                    float personSentRectWidth = xRefNo - xPersonSent - 2;
+                    personSentRect.Location = new Point((int)xPersonSent, (int)y);
                     personSentRect.Size = new Size((int)personSentRectWidth, (int)e.Graphics.MeasureString(_files[Offset].PersonSent, pageFont, (int)personSentRectWidth, StringFormat.GenericTypographic).Width);
                     int personSentHeight = (int)e.Graphics.MeasureString(_files[Offset].PersonSent, pageFont, (int)personSentRectWidth, StringFormat.GenericTypographic).Height;
                     allRectHeights.Add(personSentHeight);
 
                     //Rectangle for Reference Number
                     RectangleF refRect = new RectangleF();
-                    float refRectangleWidth = xSubject - xRefNo ;
+                    float refRectangleWidth = xSubject - xRefNo;
                     refRect.Location = new PointF((int)xRefNo, (int)y);
-                    refRect.Size = new Size((int)refRectangleWidth,(int)e.Graphics.MeasureString(_files[Offset].ReferenceNumber,pageFont,(int)refRectangleWidth,StringFormat.GenericTypographic).Width);
+                    refRect.Size = new Size((int)refRectangleWidth, (int)e.Graphics.MeasureString(_files[Offset].ReferenceNumber, pageFont, (int)refRectangleWidth, StringFormat.GenericTypographic).Width);
                     int refHeight = (int)e.Graphics.MeasureString(_files[Offset].ReferenceNumber, pageFont, (int)refRectangleWidth, StringFormat.GenericTypographic).Height;
                     allRectHeights.Add(refHeight);
 
                     //Rectangle for Subject
                     RectangleF subjectRect = new RectangleF();
-                    float subjectRectWidth = xFrom - xSubject ;
+                    float subjectRectWidth = xFrom - xSubject;
                     subjectRect.Location = new Point((int)xSubject, (int)y);
                     subjectRect.Size = new Size((int)subjectRectWidth, (int)e.Graphics.MeasureString(_files[Offset].Subject, pageFont, (int)subjectRectWidth, StringFormat.GenericTypographic).Width);
                     int subjectHeight = (int)e.Graphics.MeasureString(_files[Offset].Subject, pageFont, (int)subjectRectWidth, StringFormat.GenericTypographic).Height;
@@ -171,7 +249,7 @@ namespace RegistryAppUI.Printer
 
                     //Rectangle for Department from                    
                     RectangleF fromRect = new RectangleF();
-                    float fromRectWidth = xTo - xFrom ;
+                    float fromRectWidth = xTo - xFrom;
                     fromRect.Location = new Point((int)xFrom, (int)y);
                     fromRect.Size = new Size((int)fromRectWidth, (int)e.Graphics.MeasureString(_files[Offset].DepartmentSent, pageFont, (int)fromRectWidth, StringFormat.GenericTypographic).Width);
                     int fromHeight = (int)e.Graphics.MeasureString(_files[Offset].DepartmentSent, pageFont, (int)fromRectWidth, StringFormat.GenericTypographic).Height;
@@ -179,7 +257,7 @@ namespace RegistryAppUI.Printer
 
                     //Rectangle for Department To
                     RectangleF toRect = new RectangleF();
-                    float toRectWidth = xRemarks - xTo ;
+                    float toRectWidth = xRemarks - xTo;
                     toRect.Location = new Point((int)xTo, (int)y);
                     toRect.Size = new Size((int)toRectWidth, (int)e.Graphics.MeasureString(_files[Offset].Department.DepartmentName, pageFont, (int)toRectWidth, StringFormat.GenericTypographic).Width);
                     int toHeight = (int)e.Graphics.MeasureString(_files[Offset].Department.DepartmentName, pageFont, (int)toRectWidth, StringFormat.GenericTypographic).Height;
@@ -194,37 +272,71 @@ namespace RegistryAppUI.Printer
                     allRectHeights.Add(remarksHeight);
 
                     //draw records on the paper
-                   // e.Graphics.DrawString((Offset + 1+".").ToString(), pageFont, blackBrush, xNo, y);
-                    e.Graphics.DrawString(_files[Offset].RegistryNumber.ToString(),pageFont,blackBrush,xRegNo,y);
+                     e.Graphics.DrawString((Offset + 1 + ". ").ToString(), pageFont, blackBrush, noRect);
+                    e.Graphics.DrawString("TMA-REG-"+_files[Offset].RegistryNumber.ToString("D3"), pageFont, blackBrush, regNumberRect);
                     e.Graphics.DrawString(_files[Offset].DateReceived.ToString("dd/MM/yyyy"), pageFont, blackBrush, xReceivedDate, y);
-                    e.Graphics.DrawString(_files[Offset].PersonSent, pageFont, blackBrush, personSentRect);
-                    e.Graphics.DrawString(_files[Offset].DateOfLetter.ToString("dd/MM/yyyy"), pageFont, blackBrush, xFileDate, y);
-                    e.Graphics.DrawString(_files[Offset].ReferenceNumber, pageFont, blackBrush, refRect);
-                    e.Graphics.DrawString(_files[Offset].Subject, pageFont, blackBrush, subjectRect);
-                    e.Graphics.DrawString(_files[Offset].DepartmentSent, pageFont, blackBrush, fromRect);
-                    e.Graphics.DrawString(_files[Offset].Department.DepartmentName, pageFont, blackBrush, toRect);
-                    e.Graphics.DrawString(_files[Offset]?.Remarks ?? "", pageFont, blackBrush, remarksRect);
+                    e.Graphics.DrawString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_files[Offset].PersonSent), pageFont, blackBrush, personSentRect);
+                   //e.Graphics.DrawString(_files[Offset].DateOfLetter.ToString("dd/MM/yyyy"), pageFont, blackBrush, xFileDate, y);
+                    e.Graphics.DrawString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_files[Offset].ReferenceNumber), pageFont, blackBrush, refRect);
+                    e.Graphics.DrawString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_files[Offset].Subject), pageFont, blackBrush, subjectRect);
+                    e.Graphics.DrawString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_files[Offset].DepartmentSent), pageFont, blackBrush, fromRect);
+                    e.Graphics.DrawString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_files[Offset].Department.DepartmentName), pageFont, blackBrush, toRect);
+                    e.Graphics.DrawString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_files[Offset]?.Remarks ?? ""), pageFont, blackBrush, remarksRect);
 
                     //Increase the offset by one
                     Offset += 1;
 
+                   
                     //Find the maximum height
                     int maxHeight = allRectHeights.Max();
 
-                    y += maxHeight + 8;
+                    y += maxHeight +2;
+                    //Print a line
+                    e.Graphics.DrawLine(new Pen(blueBrush, 1), e.MarginBounds.Left, y, e.MarginBounds.Right, y);
+
+                    y += fontHeight ;
+
+                   
+
                 }
 
-                if (Offset<_files.Count-1)
+                if (Offset < _files.Count - 1)
                 {
                     //There are still pages to be print
+                    printPageHeader = false;
                     e.HasMorePages = true;
                 }
                 else
                 {
                     Offset = 0;
+                    stopReading = true;
                 }
 
-                lineHeight += y;
+                lineHeight = y;
+                if (stopReading)
+                {
+                    lineHeight -= fontHeight;
+                    //We can print the footer of the page...
+                    PrintFooter(e);
+                }
+            }
+        }
+
+        private void PrintFooter(PrintPageEventArgs e)
+        {
+            SolidBrush blackBrush = new SolidBrush(Color.Black);
+            SolidBrush blueBrush = new SolidBrush(Color.FromArgb(0, 122, 204));
+            float y = lineHeight;
+            //y += 4;
+           // e.Graphics.DrawLine(new Pen(blueBrush, 1), e.MarginBounds.Left, y, e.MarginBounds.Right, y);
+   
+            //e.Graphics.DrawLine(new Pen(blueBrush, 1), e.MarginBounds.Left, y, e.MarginBounds.Right, y);
+            using (Font footerFont = new Font("Arial",8))
+            {
+                float fontHeight = footerFont.GetHeight(e.Graphics);
+                y += fontHeight;
+              float  xFooter = footerBegins;
+                e.Graphics.DrawString($"Total Files Printed: {_files.Count()}", footerFont, blueBrush, xFooter, y);
             }
         }
     }

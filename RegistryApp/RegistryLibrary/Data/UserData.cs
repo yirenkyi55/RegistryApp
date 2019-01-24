@@ -27,6 +27,7 @@ namespace RegistryLibrary.Data
             {
                 var param = new DynamicParameters();
                 param.Add("@Name", user.Name);
+                param.Add("@FullName", user.FullName);
                 param.Add("@Password", EncryptionData.EncryptData(user.Password));
                 param.Add("@Question", user.Question);
                 param.Add("@Answer", EncryptionData.EncryptData(user.Answer));
@@ -140,5 +141,19 @@ namespace RegistryLibrary.Data
                 return result > 0;
             }
         }
+
+        public async Task<bool> ChangePassword(UserModel user)
+        {
+            using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnString()))
+            {
+                var param = new DynamicParameters();
+                param.Add("@Id", user.Id);
+                param.Add("@Password", EncryptionData.EncryptData(user.Password));
+                var result = await connection.ExecuteAsync("spUser_ChangePassword", param, commandType: CommandType.StoredProcedure);
+                return result > 0;
+            }
+        }
+
+        
     }
 }

@@ -12,6 +12,7 @@ using RegistryLibrary.Abstracts;
 using RegistryLibrary.Data;
 using System.Globalization;
 using RegistryAppUI.UserControls;
+using RegistryLibrary.Infrastructure;
 
 namespace RegistryAppUI
 {
@@ -49,32 +50,41 @@ namespace RegistryAppUI
         {
             if (IsValidForm())
             {
-                _department.DepartmentName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(txtName.Text.Trim());
+                try
+                {
+                    _department.DepartmentName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(txtName.Text.Trim());
 
-                if (txtAddress.Text.Trim()==string.Empty)
-                {
-                    _department.Address = null;
-                }
-                else
-                {
-                    _department.Address = txtAddress.Text.Trim().ToLower();
-                }
+                    if (txtAddress.Text.Trim() == string.Empty)
+                    {
+                        _department.Address = null;
+                    }
+                    else
+                    {
+                        _department.Address = txtAddress.Text.Trim().ToLower();
+                    }
 
-                if (txtEmail.Text.Trim()==null)
-                {
-                    _department.Email = null;
-                }
-                else
-                {
-                    _department.Email = txtEmail.Text.Trim();
-                }
+                    if (txtEmail.Text.Trim() == null)
+                    {
+                        _department.Email = null;
+                    }
+                    else
+                    {
+                        _department.Email = txtEmail.Text.Trim();
+                    }
 
-                //Update department records.
-                department.UpdateDepartment(_department);
-                MessageBox.Show($"Record has been successfully updated", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //Trigger gridview event for DepartmentList
-                UpdateGrid();
-                this.Close();
+                    //Update department records.
+                    department.UpdateDepartment(_department);
+                    Logger.WriteToFile(Logger.FullName, "successfully modified a department");
+                    MessageBox.Show($"Record has been successfully updated", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //Trigger gridview event for DepartmentList
+                    UpdateGrid();
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show($"Sorry an error occured. \n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
             }
         }

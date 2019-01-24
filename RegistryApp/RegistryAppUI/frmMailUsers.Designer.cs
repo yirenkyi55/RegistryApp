@@ -29,15 +29,21 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMailUsers));
             this.header = new Bunifu.Framework.UI.BunifuCards();
             this.lblModify = new System.Windows.Forms.Label();
+            this.btnClose = new Bunifu.Framework.UI.BunifuImageButton();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlProgress = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lblWait = new System.Windows.Forms.Label();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnSendMail = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnSearchPdf = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -49,6 +55,7 @@
             this.txtSubject = new Bunifu.Framework.UI.BunifuMetroTextbox();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnRemove = new System.Windows.Forms.Button();
             this.btnAddMail = new System.Windows.Forms.Button();
             this.cboDepartment = new MetroFramework.Controls.MetroComboBox();
             this.lsbEmails = new System.Windows.Forms.ListBox();
@@ -59,20 +66,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.bunifuDragControl1 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.btnRemove = new System.Windows.Forms.Button();
-            this.pnlProgress = new System.Windows.Forms.Panel();
-            this.lblWait = new System.Windows.Forms.Label();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnClose = new Bunifu.Framework.UI.BunifuImageButton();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.header.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             this.panel1.SuspendLayout();
+            this.pnlProgress.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            this.pnlProgress.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             this.SuspendLayout();
             // 
             // header
@@ -102,6 +103,20 @@
             this.lblModify.Size = new System.Drawing.Size(79, 16);
             this.lblModify.TabIndex = 2;
             this.lblModify.Text = "Send Mails";
+            // 
+            // btnClose
+            // 
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnClose.Image = global::RegistryAppUI.Properties.Resources.Shutdown_;
+            this.btnClose.ImageActive = null;
+            this.btnClose.Location = new System.Drawing.Point(751, 9);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(29, 27);
+            this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnClose.TabIndex = 1;
+            this.btnClose.TabStop = false;
+            this.btnClose.Zoom = 10;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // panel5
             // 
@@ -144,6 +159,34 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(769, 542);
             this.panel1.TabIndex = 37;
+            // 
+            // pnlProgress
+            // 
+            this.pnlProgress.Controls.Add(this.progressBar1);
+            this.pnlProgress.Controls.Add(this.lblWait);
+            this.pnlProgress.Location = new System.Drawing.Point(16, 493);
+            this.pnlProgress.Name = "pnlProgress";
+            this.pnlProgress.Size = new System.Drawing.Size(726, 48);
+            this.pnlProgress.TabIndex = 5;
+            this.pnlProgress.Visible = false;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(191, 4);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(394, 23);
+            this.progressBar1.TabIndex = 20;
+            // 
+            // lblWait
+            // 
+            this.lblWait.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblWait.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.lblWait.Location = new System.Drawing.Point(0, 29);
+            this.lblWait.Name = "lblWait";
+            this.lblWait.Size = new System.Drawing.Size(726, 19);
+            this.lblWait.TabIndex = 19;
+            this.lblWait.Text = "Sending mail. Please Wait...";
+            this.lblWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnReset
             // 
@@ -192,6 +235,21 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Attachment";
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnRefresh.FlatAppearance.BorderSize = 0;
+            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefresh.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefresh.Image = global::RegistryAppUI.Properties.Resources.resetButton;
+            this.btnRefresh.Location = new System.Drawing.Point(604, 63);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(42, 29);
+            this.btnRefresh.TabIndex = 42;
+            this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.Visible = false;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnBrowse
             // 
@@ -344,6 +402,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Recipient";
             // 
+            // btnRemove
+            // 
+            this.btnRemove.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnRemove.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRemove.FlatAppearance.BorderSize = 0;
+            this.btnRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemove.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRemove.ForeColor = System.Drawing.Color.White;
+            this.btnRemove.Location = new System.Drawing.Point(635, 63);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(89, 44);
+            this.btnRemove.TabIndex = 2;
+            this.btnRemove.Text = "Remove Selected";
+            this.btnRemove.UseVisualStyleBackColor = false;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            // 
             // btnAddMail
             // 
             this.btnAddMail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
@@ -454,79 +528,6 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // btnRemove
-            // 
-            this.btnRemove.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.btnRemove.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRemove.FlatAppearance.BorderSize = 0;
-            this.btnRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRemove.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRemove.ForeColor = System.Drawing.Color.White;
-            this.btnRemove.Location = new System.Drawing.Point(635, 63);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(89, 44);
-            this.btnRemove.TabIndex = 2;
-            this.btnRemove.Text = "Remove Selected";
-            this.btnRemove.UseVisualStyleBackColor = false;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
-            // 
-            // pnlProgress
-            // 
-            this.pnlProgress.Controls.Add(this.progressBar1);
-            this.pnlProgress.Controls.Add(this.lblWait);
-            this.pnlProgress.Location = new System.Drawing.Point(16, 493);
-            this.pnlProgress.Name = "pnlProgress";
-            this.pnlProgress.Size = new System.Drawing.Size(726, 48);
-            this.pnlProgress.TabIndex = 5;
-            this.pnlProgress.Visible = false;
-            // 
-            // lblWait
-            // 
-            this.lblWait.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblWait.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.lblWait.Location = new System.Drawing.Point(0, 29);
-            this.lblWait.Name = "lblWait";
-            this.lblWait.Size = new System.Drawing.Size(726, 19);
-            this.lblWait.TabIndex = 19;
-            this.lblWait.Text = "Sending mail. Please Wait...";
-            this.lblWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.btnRefresh.FlatAppearance.BorderSize = 0;
-            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefresh.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.Image = global::RegistryAppUI.Properties.Resources.resetButton;
-            this.btnRefresh.Location = new System.Drawing.Point(604, 63);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(42, 29);
-            this.btnRefresh.TabIndex = 42;
-            this.btnRefresh.UseVisualStyleBackColor = false;
-            this.btnRefresh.Visible = false;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.btnClose.Image = global::RegistryAppUI.Properties.Resources.Shutdown_;
-            this.btnClose.ImageActive = null;
-            this.btnClose.Location = new System.Drawing.Point(751, 9);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(29, 27);
-            this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.btnClose.TabIndex = 1;
-            this.btnClose.TabStop = false;
-            this.btnClose.Zoom = 10;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(191, 4);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(394, 23);
-            this.progressBar1.TabIndex = 20;
-            // 
             // frmMailUsers
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -539,12 +540,16 @@
             this.Controls.Add(this.header);
             this.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMailUsers";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmMailUsers";
+            this.Load += new System.EventHandler(this.frmMailUsers_Load);
             this.header.ResumeLayout(false);
             this.header.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.pnlProgress.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -552,8 +557,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            this.pnlProgress.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             this.ResumeLayout(false);
 
         }

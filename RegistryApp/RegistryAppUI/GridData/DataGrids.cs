@@ -10,6 +10,7 @@ using System.Globalization;
 using PagedList;
 using RegistryLibrary.Abstracts;
 using RegistryLibrary.Data;
+using RegistryLibrary.Infrastructure;
 
 namespace RegistryAppUI.GridData
 {
@@ -38,7 +39,7 @@ namespace RegistryAppUI.GridData
             foreach (var department in departments)
             {
                 department.DepartmentName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(department.DepartmentName);
-                table.Rows.Add(department.Id, department.DepartmentName, department?.Address, department?.Email);
+                table.Rows.Add(department.Id,department.DepartmentName, CultureInfo.CurrentCulture.TextInfo.ToTitleCase(department?.Address??""), department?.Email);
             }
 
             //Invoke the event
@@ -54,7 +55,7 @@ namespace RegistryAppUI.GridData
             });
         }
 
-        public async Task<IPagedList<IncomingFileModel>> GetOnlyPagedFileListAsync(int pageNumber = 1, int pageSize = 15)
+        public async Task<IPagedList<IncomingFileModel>> GetPagedFileListAsync(int pageNumber = 1, int pageSize = 15)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -75,7 +76,7 @@ namespace RegistryAppUI.GridData
         {
             DataTable table = new DataTable();
             table.Columns.Add("Id", typeof(int));
-            table.Columns.Add("Registry Number", typeof(int));
+            table.Columns.Add("Registry Number", typeof(string));
             table.Columns.Add("Received Date", typeof(string));
             table.Columns.Add("Person Sent", typeof(string));
             table.Columns.Add("Date of Letter", typeof(string));
@@ -88,10 +89,23 @@ namespace RegistryAppUI.GridData
 
             foreach (var file in allFiles.ToList())
             {
-                table.Rows.Add(file.Id, file.RegistryNumber,file.DateReceived.ToString("dd/MM/yyy"),
-                    file.PersonSent, file.DateOfLetter.ToString("dd/MM/yyyy"), file?.ReferenceNumber ?? "",
-                    file.Subject, file?.DepartmentSent ?? "", file?.FileName ?? "",
-                    file?.Remarks ?? "", file.Department.DepartmentName);
+                table.Rows.Add(file.Id,"TMA-REG-"+ file.RegistryNumber.ToString("D3"),file.DateReceived.ToString("dd/MM/yyy"),
+                   CultureInfo.CurrentCulture.TextInfo.ToTitleCase( file.PersonSent), file.DateOfLetter.ToString("dd/MM/yyyy"), CultureInfo.CurrentCulture.TextInfo.ToTitleCase( file?.ReferenceNumber ?? ""),
+                   CultureInfo.CurrentCulture.TextInfo.ToTitleCase( file.Subject), CultureInfo.CurrentCulture.TextInfo.ToTitleCase( file?.DepartmentSent ?? ""), file?.FileName ?? "",
+                   CultureInfo.CurrentCulture.TextInfo.ToTitleCase( file?.Remarks ?? ""), CultureInfo.CurrentCulture.TextInfo.ToTitleCase( file.Department.DepartmentName));
+            }
+
+            return table;
+        }
+
+        public DataTable LoggerDataTable(List<LoggerModel> loggers)
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add("Log Events",typeof(string));
+            foreach (var log in loggers)
+            {
+                string userName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(log.LoggerName);
+                table.Rows.Add($"{userName} {log.Event} at {log.Date}");
             }
 
             return table;

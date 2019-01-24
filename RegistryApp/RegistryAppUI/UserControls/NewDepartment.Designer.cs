@@ -33,7 +33,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.txtAddress = new WindowsFormsControlLibrary1.BunifuCustomTextbox();
-            this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             this.txtEmail = new Bunifu.Framework.UI.BunifuMetroTextbox();
             this.btnReset = new Bunifu.Framework.UI.BunifuThinButton2();
             this.txtName = new Bunifu.Framework.UI.BunifuMetroTextbox();
@@ -43,16 +42,18 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.panel2);
+            this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.txtAddress);
-            this.panel1.Controls.Add(this.separatorControl1);
             this.panel1.Controls.Add(this.txtEmail);
             this.panel1.Controls.Add(this.btnReset);
             this.panel1.Controls.Add(this.txtName);
@@ -80,21 +81,13 @@
             this.txtAddress.BackColor = System.Drawing.Color.White;
             this.txtAddress.BorderColor = System.Drawing.Color.SeaGreen;
             this.txtAddress.Location = new System.Drawing.Point(93, 130);
+            this.txtAddress.MaxLength = 150;
             this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtAddress.Size = new System.Drawing.Size(284, 115);
             this.txtAddress.TabIndex = 3;
-            // 
-            // separatorControl1
-            // 
-            this.separatorControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.separatorControl1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.separatorControl1.LineOrientation = System.Windows.Forms.Orientation.Vertical;
-            this.separatorControl1.Location = new System.Drawing.Point(0, 0);
-            this.separatorControl1.Name = "separatorControl1";
-            this.separatorControl1.Size = new System.Drawing.Size(16, 298);
-            this.separatorControl1.TabIndex = 0;
+            this.txtAddress.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAddress_KeyPress);
             // 
             // txtEmail
             // 
@@ -113,6 +106,7 @@
             this.txtEmail.Size = new System.Drawing.Size(286, 39);
             this.txtEmail.TabIndex = 2;
             this.txtEmail.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtEmail.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtEmail_KeyPress);
             // 
             // btnReset
             // 
@@ -157,6 +151,7 @@
             this.txtName.Size = new System.Drawing.Size(286, 39);
             this.txtName.TabIndex = 1;
             this.txtName.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtName_KeyPress);
             // 
             // btnCreate
             // 
@@ -229,6 +224,25 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(10, 298);
+            this.panel2.TabIndex = 7;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
+            this.label6.Location = new System.Drawing.Point(383, 163);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(15, 20);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "*";
+            // 
             // NewDepartment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -242,7 +256,6 @@
             this.Size = new System.Drawing.Size(528, 426);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.separatorControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -259,10 +272,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private WindowsFormsControlLibrary1.BunifuCustomTextbox txtAddress;
-        private DevExpress.XtraEditors.SeparatorControl separatorControl1;
         private Bunifu.Framework.UI.BunifuThinButton2 btnCreate;
         private Bunifu.Framework.UI.BunifuThinButton2 btnReset;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label6;
     }
 }

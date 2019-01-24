@@ -14,6 +14,18 @@ namespace RegistryAppUI
                 e.Handled = true;
         }
 
-     
+        public static void ValidateMaterial(this BunifuMaterialTextbox textBox, int maxNumber, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar))
+            {
+                return;
+            }
+            if (textBox.Text.Trim().Length == maxNumber)
+            {
+                e.Handled = true;
+            }
+        }
+
+
     }
 }

@@ -13,6 +13,7 @@ namespace RegistryLibrary.Validation
         public UserValidator()
         {
             RuleFor(u => u.Name).NotEmpty().WithMessage("User name is required").Length(3, 100).WithMessage("User name must be between 3-100 characters");
+            RuleFor(u => u.FullName).NotEmpty().WithMessage("Full name is required").Length(3, 150).WithMessage("Full name must be between 3-150 characters");
             RuleFor(u => u.Password).NotEmpty().WithMessage("Password is required").MinimumLength(8).WithMessage("Password must exceed 8 characters");  
             RuleFor(u => u.Question).NotEmpty().WithMessage("Security question is required");
             RuleFor(u => u.Answer).NotEmpty().WithMessage("Answer is required");

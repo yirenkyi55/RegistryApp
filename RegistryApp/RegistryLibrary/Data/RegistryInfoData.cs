@@ -22,6 +22,17 @@ namespace RegistryLibrary.Data
             }
         }
 
+
+        public RegistryInfoModel GetRegistryInfoPrint()
+        {
+            using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnString()))
+            {
+                var registrys =  connection.Query<RegistryInfoModel>("spRegistry_Select", CommandType.StoredProcedure);
+                return registrys.Count() > 0 ? registrys.First() : new RegistryInfoModel();
+            }
+        }
+
+
         /// <summary>
         /// Save Registry Information into the database
         /// </summary>

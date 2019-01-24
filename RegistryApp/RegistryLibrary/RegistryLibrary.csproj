@@ -51,10 +51,12 @@
   <ItemGroup>
     <Compile Include="Abstracts\IDepartmentData.cs" />
     <Compile Include="Abstracts\IIncomingFileData.cs" />
+    <Compile Include="Abstracts\ILicenseData.cs" />
     <Compile Include="Abstracts\IRegistryInfo.cs" />
     <Compile Include="Abstracts\IUserData.cs" />
     <Compile Include="Data\DepartmentData.cs" />
     <Compile Include="Data\IncomingFileData.cs" />
+    <Compile Include="Data\LicenseData.cs" />
     <Compile Include="Data\RegistryInfoData.cs" />
     <Compile Include="Data\UserData.cs" />
     <Compile Include="Enums.cs" />
@@ -62,9 +64,12 @@
     <Compile Include="Infrastructure\AppSettings.cs" />
     <Compile Include="Infrastructure\EncryptionData.cs" />
     <Compile Include="Infrastructure\FileSettings.cs" />
+    <Compile Include="Infrastructure\Logger.cs" />
+    <Compile Include="Infrastructure\LoggerModel.cs" />
     <Compile Include="Infrastructure\Mailer.cs" />
     <Compile Include="Models\DepartmentModel.cs" />
     <Compile Include="Models\IncomingFileModel.cs" />
+    <Compile Include="Models\LicenseModel.cs" />
     <Compile Include="Models\RegistryInfoModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

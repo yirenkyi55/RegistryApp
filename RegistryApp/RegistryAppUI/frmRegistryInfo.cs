@@ -44,7 +44,20 @@ namespace RegistryAppUI
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 picFileName = ofd.FileName;
-                picLogo.Image = Image.FromFile(picFileName);
+                var image = Image.FromFile(picFileName);
+                var height = image.Height;
+                var width = image.Width;
+
+                if (height!=80 && width!=80)
+                {
+                    MessageBox.Show($"Logo size should be (80 x 80). Your Logo has size ({width} x {height}).\n Please upload the requried Logo size", "Invalid Logo Size", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+                    picLogo.Image = image;
+                }
+               
+            
             }
         }
 
@@ -152,6 +165,7 @@ namespace RegistryAppUI
                     var oRegistry = GetRegistry();
                     //Save the registryInfo
                     await registry.SaveRegistryInfo(oRegistry);
+                    Logger.WriteToFile(Logger.FullName, "Successfully set registry information");
                     MessageBox.Show($"Registry Information has been successfully {save}", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
@@ -186,8 +200,16 @@ namespace RegistryAppUI
 
         private async void frmRegistryInfo_Load(object sender, EventArgs e)
         {
-            await LoadRegistryInfo();
-            PopulateControls();
+            try
+            {
+                await LoadRegistryInfo();
+                PopulateControls();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show($"Sorry an error occured. \n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -197,6 +219,7 @@ namespace RegistryAppUI
                 picLogo.Image = null;
                 registryRecord.PicData = null;
                 registryRecord.PicName = null;
+                Logger.WriteToFile(Logger.FullName, "Deleted a Logo");
             }
         }
     }

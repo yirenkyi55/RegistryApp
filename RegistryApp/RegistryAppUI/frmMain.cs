@@ -1,5 +1,11 @@
-﻿using RegistryLibrary.Models;
+﻿using RegistryLibrary.Abstracts;
+using RegistryLibrary.Data;
+using RegistryLibrary.Infrastructure;
+using RegistryLibrary.Models;
 using System;
+using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RegistryAppUI
@@ -7,6 +13,8 @@ namespace RegistryAppUI
     public partial class frmMain : Form
     {
         UserModel loginUser = new UserModel();
+        private bool appOnExit = false;
+        ILicenseData licenseData = new LicenseData();
 
         public frmMain(UserModel user)
         {
@@ -18,20 +26,70 @@ namespace RegistryAppUI
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Logger.WriteToFile(Logger.FullName, "successfully logged out");
+            this.Close();
+
         }
 
         private void btnRegInfo_Click(object sender, EventArgs e)
         {
-            
-            frmRegistryInfo frmRegistry = new frmRegistryInfo();          
+
+            frmRegistryInfo frmRegistry = new frmRegistryInfo();
             frmRegistry.ShowDialog();
         }
 
-        private void LoadUserInfo()
+        private void ProductStatus(string message)
         {
-            lblStatus.Text =$"Login as: {loginUser.AccessType}";
-           
+            lblExpiry.Text = $"Product Status: ({message})";
+        }
+
+        private void HasLicensedKey(bool keyApplied)
+        {
+            if (keyApplied)
+            {
+                //Enable all controls
+                btnAllUsers.Enabled = true;
+                btnAllFiles.Enabled = true;
+                btnBackup.Enabled = true;
+                btnLog.Enabled = true;
+                btnReceiveFile.Enabled = true;
+                btnRegDepartment.Enabled = true;
+                btnRegUsers.Enabled = true;
+                btnRegInfo.Enabled = true;
+                btnSendMail.Enabled = true;
+                lblChangePassword.Enabled = true;
+                lblExpiry.ForeColor = Color.Green;
+            }
+        }
+
+        private async Task LoadUserInfo()
+        {
+            lblStatus.Text = $"Login Status: {loginUser.AccessType}";
+            lblFullName.Text = $" {loginUser?.FullName.ToUpper()}";
+            if (await licenseData.HasExpired(ProductStatus, HasLicensedKey))
+            {
+                //Disable all controls
+                btnAllUsers.Enabled = false;
+                btnAllFiles.Enabled = false;
+                btnBackup.Enabled = false;
+                btnLog.Enabled = false;
+                btnReceiveFile.Enabled = false;
+                btnRegDepartment.Enabled = false;
+                btnRegUsers.Enabled = false;
+                btnRegInfo.Enabled = false;
+                btnSendMail.Enabled = false;
+                lblChangePassword.Enabled = false;
+                lblExpiry.ForeColor = Color.Red;
+            }
+
+            if (loginUser.AccessType.ToLower()!="administrator")
+            {
+                //Disable access to certain controls
+                btnRegInfo.Enabled = false;
+                btnRegUsers.Enabled = false;
+                btnAllUsers.Enabled = false;
+                btnLog.Enabled = false;
+            }
         }
 
         private void btnRegUsers_Click(object sender, EventArgs e)
@@ -77,17 +135,55 @@ namespace RegistryAppUI
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to log out?","Confrim log out",MessageBoxButtons.YesNo,MessageBoxIcon.Question)==DialogResult.Yes)
-            {
-                this.Close();
-            }
-           
+            Logger.WriteToFile(Logger.FullName, "successfully logged out");
+            this.Close();
+
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            frmLogin login = new frmLogin();
-            login.Show();
+            if (!appOnExit)
+            {
+                if (MessageBox.Show("Are you sure you want to logout?", "Confirm logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                frmLogin login = new frmLogin();
+                login.Show();
+            }
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            frmChangePassword changePassword = new frmChangePassword(loginUser);
+            changePassword.ShowDialog();
+        }
+
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+
+            frmPerformBackup backup = new frmPerformBackup();
+            backup.ShowDialog();
+
+        }
+
+        private void btnLog_Click(object sender, EventArgs e)
+        {
+            frmLogger frmLogger = new frmLogger();
+            frmLogger.ShowDialog();
+        }
+
+        private async void btnAbout_Click(object sender, EventArgs e)
+        {
+            frmAbout about = new frmAbout();
+            about.ShowDialog();
+            await LoadUserInfo();
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -49,19 +49,36 @@ namespace RegistryAppUI
         {
             using (OpenFileDialog opfd = new OpenFileDialog() {Multiselect=false,ValidateNames=true,Filter="PDF|*.pdf" })
             {
-                if (opfd.ShowDialog() == DialogResult.OK)
+                try
                 {
-                    axAcroPDF1.src = opfd.FileName;
-                    lblFileName.Text = opfd.FileName;
-                    fileName = opfd.FileName;
+
+                    if (opfd.ShowDialog() == DialogResult.OK)
+                    {
+                        axAcroPDF1.src = opfd.FileName;
+                        lblFileName.Text = opfd.FileName;
+                        fileName = opfd.FileName;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show($"Sorry an error occured.\n {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
         private void btnAddFile_Click(object sender, EventArgs e)
         {
-            _fileSettings.GetSourceFile(fileName);
-            this.Close();
+            try
+            {
+                _fileSettings.GetSourceFile(fileName);
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show($"Sorry an error occured.\n {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

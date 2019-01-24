@@ -16,7 +16,7 @@ namespace RegistryAppUI
     {
 
         List<DepartmentModel> departments = new List<DepartmentModel>();
-        List<string> toEmails = new List<string>();
+        Dictionary<DepartmentModel, string> toEmails = new Dictionary<DepartmentModel, string>();
         public static string FileName { get; set; }
         Attachment fileAttachment = null;
 
@@ -30,7 +30,8 @@ namespace RegistryAppUI
         {
             cboDepartment.DataSource = null;
             IDepartmentData department = new DepartmentData();
-            departments = department.SelectAllDepartments().ToList();
+            departments = department.SelectAllDepartments().OrderBy(d=>d.DepartmentName).ToList();
+
             if (departments.Count > 0)
             {
                 cboDepartment.DataSource = departments;
@@ -38,6 +39,7 @@ namespace RegistryAppUI
                 cboDepartment.ValueMember = "Id";
                 cboDepartment.SelectedIndex = -1;
             }
+            lblMessage.Text = "";
         }
 
         private bool ValidateEmail(string email)
@@ -61,17 +63,19 @@ namespace RegistryAppUI
 
 
 
-        private void AddEmails(string emailAddress)
+        private void AddEmails(DepartmentModel department)
         {
-            if (!toEmails.Equals(emailAddress))
+            if (!toEmails.Values.Contains(department.Email))
             {
-                toEmails.Add(emailAddress);
+                toEmails.Add(department, department.Email);
                 lsbEmails.DataSource = null;
-                lsbEmails.DataSource = toEmails;
+                lsbEmails.DataSource = new BindingSource(toEmails, null);
+                lsbEmails.DisplayMember = "Value";
+                lsbEmails.ValueMember = "Key";
             }
             else
             {
-                MessageBox.Show($"The address: {emailAddress} has been already added", "Add", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"The address: {department.Email} has already been added", "Add", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
         }
@@ -120,6 +124,27 @@ namespace RegistryAppUI
             cboDepartment.SelectedIndex = -1;
         }
 
+        private void RemoveDepartment(DepartmentModel department)
+        {
+            departments.Remove(department);
+            cboDepartment.DataSource = null;
+            cboDepartment.DataSource = departments.OrderBy(d=>d.DepartmentName).ToList();
+            cboDepartment.DisplayMember = "DepartmentName";
+            cboDepartment.ValueMember = "Id";
+            cboDepartment.SelectedIndex = -1;
+            lblMessage.Text = "";
+        }
+
+        private void ReAddDepartment(DepartmentModel department)
+        {
+            departments.Add(department);
+            cboDepartment.DataSource = null;
+            cboDepartment.DataSource = departments.OrderBy(d=>d.DepartmentName).ToList();
+            cboDepartment.DisplayMember = "DepartmentName";
+            cboDepartment.ValueMember = "Id";
+            cboDepartment.SelectedIndex = -1;
+            lblMessage.Text = "";
+        }
         private void btnAddMail_Click(object sender, EventArgs e)
         {
             if (cboDepartment.SelectedIndex != -1)
@@ -127,8 +152,15 @@ namespace RegistryAppUI
                 DepartmentModel department = (DepartmentModel)cboDepartment.SelectedItem;
                 if (department.Email != null)
                 {
-                    AddEmails(department.Email);
+                    AddEmails(department);
+                    RemoveDepartment(department);
                 }
+                else
+                {
+                    MessageBox.Show($"No Email address found for {department.DepartmentName}.\n Please Update Department Information", "No Email", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+
+
             }
             else
             {
@@ -136,7 +168,9 @@ namespace RegistryAppUI
                 {
                     if (ValidateEmail(txtEmail.Text.Trim()))
                     {
-                        AddEmails(txtEmail.Text);
+                        DepartmentModel department = new DepartmentModel();
+                        department.Email = txtEmail.Text;
+                        AddEmails(department);
                         txtEmail.Text = "";
                         txtEmail.Focus();
                     }
@@ -144,6 +178,8 @@ namespace RegistryAppUI
                 }
 
             }
+
+
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -203,10 +239,22 @@ namespace RegistryAppUI
         {
             if (lsbEmails.SelectedIndex != -1)
             {
-
-                toEmails.RemoveAt(lsbEmails.SelectedIndex);
+                DepartmentModel selectedDepartment = ((KeyValuePair<DepartmentModel, string>)lsbEmails.SelectedItem).Key;
+                //Remove the selected department from the emails
+                toEmails.Remove(selectedDepartment);
                 lsbEmails.DataSource = null;
-                lsbEmails.DataSource = toEmails;
+                if (toEmails.Values.Count > 0)
+                {
+                    lsbEmails.DataSource = new BindingSource(toEmails, null);
+                    lsbEmails.DisplayMember = "Value";
+                    lsbEmails.ValueMember = "Key";
+
+                }
+
+                if (selectedDepartment.Id != 0)
+                {
+                    ReAddDepartment(selectedDepartment);
+                }
 
 
             }
@@ -249,17 +297,19 @@ namespace RegistryAppUI
                 // start the waiting animation
                 pnlProgress.Visible = true;
                 progressBar1.Style = ProgressBarStyle.Marquee;
-                var result = await Task.Run(() => Mailer.SendMail(toEmails, subject, body, ShowMailError, fileAttachment));
+                List<string> useremails = toEmails.Values.ToList();
+                var result = await Task.Run(() => Mailer.SendMail(useremails, subject, body, ShowMailError, fileAttachment));
 
 
                 if (result)
                 {
                     pnlProgress.Visible = false;
+                    Logger.WriteToFile(Logger.FullName, "successfully sent a mail");
                     MessageBox.Show("Your mail has been successfully sent", "Send Mail", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     btnReset_Click(this, null);
-                
+
                 }
-              
+
 
 
             }
@@ -269,13 +319,18 @@ namespace RegistryAppUI
         {
             pnlProgress.Visible = false;
             MessageBox.Show($"Sorry. An Error occured while sending mail.\n{errorMessage}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-           
+
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             txtFileName.Text = "";
             btnRefresh.Visible = false;
+        }
+
+        private void frmMailUsers_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

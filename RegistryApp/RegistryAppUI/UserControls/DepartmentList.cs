@@ -11,6 +11,7 @@ using RegistryLibrary.Models;
 using RegistryAppUI.GridData;
 using RegistryLibrary.Abstracts;
 using RegistryLibrary.Data;
+using RegistryLibrary.Infrastructure;
 
 namespace RegistryAppUI.UserControls
 {
@@ -89,6 +90,7 @@ namespace RegistryAppUI.UserControls
 
                 //Delete the selected department
                 department.DeleteDepartment(selectedDepartment);
+                Logger.WriteToFile(Logger.FullName, "successfully deleted a department");
                 MessageBox.Show($"{selectedDepartment.DepartmentName} has been successfully deleted", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 WireUp();
             }
@@ -105,6 +107,7 @@ namespace RegistryAppUI.UserControls
 
                 //Delete the selected department
                 department.DeleteAllDepartment();
+                Logger.WriteToFile(Logger.FullName, "successfully deleted all files");
                 MessageBox.Show($"All Departments has been successfully deleted", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 WireUp();
             }
@@ -153,6 +156,11 @@ namespace RegistryAppUI.UserControls
                 SearchedDepartments(txtSearch.Text.Trim());
             }
            
+        }
+
+        private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            txtSearch.ValidateMaterial(100, e);
         }
     }
 }

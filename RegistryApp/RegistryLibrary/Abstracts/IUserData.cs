@@ -17,5 +17,6 @@ namespace RegistryLibrary.Abstracts
         Task<UserModel> SelectUser(string userName);
         Task<bool> LogUser(UserModel user, LoginDetails loginUser);
         Task<bool> ChangeAccess(UserModel user);
+        Task<bool> ChangePassword(UserModel user);
     }
 }

@@ -14,6 +14,14 @@
         DateReceived,
         DepartmentTo,
         Remarks,
-        FileName
+        FileName,
+        RecordsWithFiles,
+        RecordsWithNoFiles
+    }
+
+    public enum WriteToText
+    {
+        Settings,
+        Backup
     }
 }

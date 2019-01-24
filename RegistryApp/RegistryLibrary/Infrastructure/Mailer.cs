@@ -12,8 +12,8 @@ namespace RegistryLibrary.Infrastructure
     {
         private const string smtpServer = "smtp.gmail.com";
         private const int smtpPort = 587;
-        private const string fromAddress = "techregistrydepartment@gmail.com";
-        private const string password = "tech!@#municipal";
+        private const string fromAddress = "registry.tma1@gmail.com";
+        private const string password = "tm@_2019";
 
 
         public static bool SendMail(IEnumerable<string> toAddress, string subject, string body, MailError error, Attachment fileAttachment = null)

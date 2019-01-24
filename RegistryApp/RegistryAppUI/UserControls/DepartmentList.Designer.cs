@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DepartmentList));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new Bunifu.Framework.UI.BunifuMaterialTextbox();
             this.btnSearch = new Bunifu.Framework.UI.BunifuImageButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.gridDepartments = new Bunifu.Framework.UI.BunifuCustomDataGrid();
             this.btnDelete = new Bunifu.Framework.UI.BunifuThinButton2();
             this.btnModify = new Bunifu.Framework.UI.BunifuThinButton2();
             this.btnDeleteAll = new Bunifu.Framework.UI.BunifuThinButton2();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.gridDepartments = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridDepartments)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridDepartments)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -78,6 +78,7 @@
             this.txtSearch.TabIndex = 8;
             this.txtSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtSearch.OnValueChanged += new System.EventHandler(this.txtSearch_OnValueChanged);
+            this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
             // 
             // btnSearch
             // 
@@ -95,52 +96,10 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.gridDepartments);
-            this.panel1.Location = new System.Drawing.Point(60, 74);
+            this.panel1.Location = new System.Drawing.Point(3, 74);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(420, 275);
+            this.panel1.Size = new System.Drawing.Size(522, 275);
             this.panel1.TabIndex = 10;
-            // 
-            // gridDepartments
-            // 
-            this.gridDepartments.AllowUserToAddRows = false;
-            this.gridDepartments.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.gridDepartments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.gridDepartments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.gridDepartments.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-            this.gridDepartments.BackgroundColor = System.Drawing.Color.White;
-            this.gridDepartments.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.gridDepartments.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(50)))), ((int)(((byte)(71)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridDepartments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            this.gridDepartments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(34)))), ((int)(((byte)(58)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.gridDepartments.DefaultCellStyle = dataGridViewCellStyle6;
-            this.gridDepartments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridDepartments.DoubleBuffered = true;
-            this.gridDepartments.EnableHeadersVisualStyles = false;
-            this.gridDepartments.GridColor = System.Drawing.SystemColors.Control;
-            this.gridDepartments.HeaderBgColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(50)))), ((int)(((byte)(71)))));
-            this.gridDepartments.HeaderForeColor = System.Drawing.Color.White;
-            this.gridDepartments.Location = new System.Drawing.Point(0, 0);
-            this.gridDepartments.Name = "gridDepartments";
-            this.gridDepartments.ReadOnly = true;
-            this.gridDepartments.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.gridDepartments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridDepartments.Size = new System.Drawing.Size(420, 275);
-            this.gridDepartments.TabIndex = 0;
             // 
             // btnDelete
             // 
@@ -239,6 +198,50 @@
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(0, 17);
             // 
+            // gridDepartments
+            // 
+            this.gridDepartments.AllowUserToAddRows = false;
+            this.gridDepartments.AllowUserToDeleteRows = false;
+            this.gridDepartments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.gridDepartments.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.gridDepartments.BackgroundColor = System.Drawing.Color.White;
+            this.gridDepartments.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.gridDepartments.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(40)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridDepartments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.gridDepartments.ColumnHeadersHeight = 30;
+            this.gridDepartments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.gridDepartments.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridDepartments.EnableHeadersVisualStyles = false;
+            this.gridDepartments.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.gridDepartments.Location = new System.Drawing.Point(0, 0);
+            this.gridDepartments.Name = "gridDepartments";
+            this.gridDepartments.ReadOnly = true;
+            this.gridDepartments.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridDepartments.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.gridDepartments.RowHeadersWidth = 30;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
+            this.gridDepartments.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.gridDepartments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.gridDepartments.Size = new System.Drawing.Size(522, 275);
+            this.gridDepartments.TabIndex = 1;
+            // 
             // DepartmentList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -259,9 +262,9 @@
             this.Load += new System.EventHandler(this.DepartmentList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).EndInit();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridDepartments)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridDepartments)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -273,11 +276,11 @@
         private Bunifu.Framework.UI.BunifuMaterialTextbox txtSearch;
         private Bunifu.Framework.UI.BunifuImageButton btnSearch;
         private System.Windows.Forms.Panel panel1;
-        private Bunifu.Framework.UI.BunifuCustomDataGrid gridDepartments;
         private Bunifu.Framework.UI.BunifuThinButton2 btnDelete;
         private Bunifu.Framework.UI.BunifuThinButton2 btnModify;
         private Bunifu.Framework.UI.BunifuThinButton2 btnDeleteAll;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.DataGridView gridDepartments;
     }
 }

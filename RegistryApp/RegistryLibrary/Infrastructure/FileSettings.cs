@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Configuration;
+
+
 namespace RegistryLibrary.Infrastructure
 {
 
@@ -8,9 +10,12 @@ namespace RegistryLibrary.Infrastructure
     {
         public string FileName { get; set; }
         private string settingsFile = "file.txt";
+        private string backupFile = "backup.txt";
+
         private string fullFilePath;
         public string SourceFilePath { get; private set; }
         public event EventHandler<string> GetSourceFilePathEvent;
+        string folderLocation = ConfigurationManager.AppSettings["folders"];
 
         /// <summary>
         /// Gets the source of the file you want to copy
@@ -66,14 +71,14 @@ namespace RegistryLibrary.Infrastructure
         /// </returns>
         private string GetFolderByName(Folders folders)
         {
-            var folderLocation = ConfigurationManager.AppSettings["folders"];
+
             return folderLocation + folderNames[(int)folders];
         }
 
         /// <summary>
-        /// Creates all working folders/Directories in the bin folder if folders do not exist
+        /// Creates all working folders/Directories in the specified path folders do not exist
         /// </summary>
-        private void CreateFolders()
+        public void CreateFolders()
         {
             foreach (var folder in Enum.GetNames(typeof(Folders)))
             {
@@ -81,6 +86,104 @@ namespace RegistryLibrary.Infrastructure
                 if (!Directory.Exists(GetFolderByName(folderEnum)))
                 {
                     Directory.CreateDirectory(GetFolderByName(folderEnum));
+                }
+            }
+        }
+
+        
+
+        /// <summary>
+        /// Creates bakup folders and files in the directory specified.
+        /// </summary>
+        /// <param name="sourcePath">The source path you want to create the backup files.</param>
+
+        public void BackupFolders(string sourcePath)
+        {
+            //Create the folders in the specified path..
+            string backupPath = sourcePath + @"\Reg_BackupFiles\";
+
+            if (!Directory.Exists(backupPath))
+            {
+                Directory.CreateDirectory(backupPath);
+            }
+
+            foreach (var folder in folderNames)
+            {
+                if (!Directory.Exists(backupPath + folder))
+                {
+                    Directory.CreateDirectory(backupPath + folder);
+                }
+            }
+
+            //Check and create folders if not exist
+            CreateFolders();
+
+            foreach (var folder in folderNames)
+            {
+                string backupFolder = backupPath + folder;
+                //Fetch all files from the working directory to this current folder
+                string currentWorkingPath = folderLocation + folder;
+                var files = Directory.GetFiles(currentWorkingPath);
+                if (files.Length > 0)
+                {
+                    foreach (var file in files)
+                    {
+                        string destinationFile = backupFolder + Path.GetFileName(file);
+                        if (!File.Exists(destinationFile))
+                        {
+                            File.Copy(file, destinationFile); 
+                        }
+                    }
+                }
+            }
+          
+        }
+
+        /// <summary>
+        /// Restore from the backup folder to thee working folders
+        /// </summary>
+        /// <param name="sourcePath">The path you want to restore from</param>
+        public void RestoreFolders(string sourcePath)
+        {
+            //First check if the backup folder exist
+            string backupPath = sourcePath + @"\Reg_BackupFiles\";
+            if (!Directory.Exists(backupPath))
+            {
+                throw new DirectoryNotFoundException($"The folder path '{backupPath}' to restore from does not exist.\n Please specify the right backup folder");
+            }
+          
+                //The directory exists so lets check other directories
+                foreach (var folder in folderNames)
+                {
+                    var fileFolder = backupPath + folder;
+                    if (!Directory.Exists(fileFolder))
+                    {
+                        throw new DirectoryNotFoundException($"The folder path '{fileFolder}' to restore from does not exist.\n Please specify the right backup folder");
+                    }
+                }
+
+            //All check is complete so lets backup from the backup directories
+
+            //First lets check if the working directories exist, if not lets create the folders..
+            CreateFolders();
+
+            foreach (var folder in folderNames)
+            {
+                var backupFolderPath = backupPath + folder;
+                var workingFolder = folderLocation + folder;
+                var files = Directory.GetFiles(backupFolderPath);
+
+                if (files.Length>0)
+                {
+                    foreach (var file in files)
+                    {
+                        //Copy the file from the backupfolder to the working folder
+                        string destFile = workingFolder + Path.GetFileName(file);
+                        if (!File.Exists(destFile))
+                        {
+                            File.Copy(file, destFile,true);
+                        } 
+                    }
                 }
             }
         }
@@ -157,11 +260,22 @@ namespace RegistryLibrary.Infrastructure
         /// <param name="text">
         /// The message you want to write to the file
         /// </param>
-        public void WriteSettingsToFile(string text)
+        public void WriteSettingsToFile(string text,WriteToText fileType)
         {
             CreateFolders();
-            File.WriteAllText(GetFolderByName(Folders.Settings) + settingsFile, text);
+            string fileName;
+            if (fileType==WriteToText.Settings)
+            {
+                fileName = settingsFile;
+            }
+            else
+            {
+                fileName = backupFile;
+            }
+            File.WriteAllText(GetFolderByName(Folders.Settings) + fileName, text);
         }
+
+       
 
         /// <summary>
         /// Reads all value from the settings file
@@ -169,10 +283,20 @@ namespace RegistryLibrary.Infrastructure
         /// <returns>
         /// A boolean value indicating file status
         /// </returns>
-        public bool ReadSettingsFromFile()
+        public bool ReadSettingsFromFile(WriteToText fileType)
         {
+            string fileName;
+            if (fileType == WriteToText.Settings)
+            {
+                fileName = settingsFile;
+            }
+            else
+            {
+                fileName = backupFile;
+            }
+
             CreateFolders();
-            string path = GetFolderByName(Folders.Settings) + settingsFile;
+            string path = GetFolderByName(Folders.Settings) + fileName;
             if (File.Exists(path))
             {
                 string text = File.ReadAllText(path);

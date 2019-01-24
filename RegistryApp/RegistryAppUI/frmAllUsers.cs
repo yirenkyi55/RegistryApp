@@ -1,5 +1,6 @@
 ﻿using RegistryLibrary.Abstracts;
 using RegistryLibrary.Data;
+using RegistryLibrary.Infrastructure;
 using RegistryLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -56,11 +57,22 @@ namespace RegistryAppUI
         {
             if (MessageBox.Show("Are you sure you want to delete user?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                var selectedUser = users[lsvUsers.FocusedItem.Index];
-                selectedUser.AccessType = cboAccess.Text.Trim();
-                await user.DeleteUser(selectedUser.Id);
-                await LoadAllUsers();
-                MessageBox.Show("User has been successfully deleted", "Delete User", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                try
+                {
+
+                    var selectedUser = users[lsvUsers.FocusedItem.Index];
+                    selectedUser.AccessType = cboAccess.Text.Trim();
+                    await user.DeleteUser(selectedUser.Id);
+                    await LoadAllUsers();
+                    Logger.WriteToFile(Logger.FullName, $"Deleted the user {selectedUser.Name}");
+                    MessageBox.Show("User has been successfully deleted", "Delete User", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show($"Sorry an error occured. \n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -68,12 +80,21 @@ namespace RegistryAppUI
         {
             if (MessageBox.Show("Are you sure you want to change access type?", "Change user", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                var selectedUser = users[lsvUsers.FocusedItem.Index];
-                selectedUser.AccessType = cboAccess.Text.Trim();
-                await user.ChangeAccess(selectedUser);
-                await LoadAllUsers();
-                MessageBox.Show("Access Type has been successfully changed", "Change", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+                try
+                {
+                    var selectedUser = users[lsvUsers.FocusedItem.Index];
+                    selectedUser.AccessType = cboAccess.Text.Trim();
+                    await user.ChangeAccess(selectedUser);
+                    await LoadAllUsers();
+                    Logger.WriteToFile(Logger.FullName, $"Changed {selectedUser.Name} access level to {selectedUser.AccessType}");
+                    MessageBox.Show("Access Type has been successfully changed", "Change", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show($"Sorry an error occured while changing access. \n {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -99,7 +120,7 @@ namespace RegistryAppUI
 
         private void cboAccess_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+
             if (cboAccess.Text.ToLower() != userAccess && lsvUsers.FocusedItem != null)
             {
                 btnChangeType.Enabled = true;

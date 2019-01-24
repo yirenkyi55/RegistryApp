@@ -36,7 +36,7 @@ namespace RegistryAppUI
             dtpSearch.Visible = false;
             txtSearch.Visible = true;
             cboSearch.SelectedIndex = 0;
-            list = await gridData.GetPagedListAsync(pageNumber);
+            list = await gridData.GetPagedFileListAsync(pageNumber);
             gridFiles.DataSource = gridData.FileDataTable(list);
             btnPrevious.Enabled = list.HasPreviousPage;
             btnNext.Enabled = list.HasNextPage;
@@ -49,7 +49,7 @@ namespace RegistryAppUI
             if (list.HasNextPage)
             {
 
-                list = await gridData.GetPagedListAsync(++pageNumber);
+                list = await gridData.GetPagedFileListAsync(++pageNumber);
                 gridFiles.DataSource = gridData.FileDataTable(list);
                 btnPrevious.Enabled = list.HasPreviousPage;
                 btnNext.Enabled = list.HasNextPage;
@@ -62,7 +62,7 @@ namespace RegistryAppUI
         {
             if (list.HasPreviousPage)
             {
-                list = await gridData.GetOnlyPagedFileListAsync(--pageNumber);
+                list = await gridData.GetPagedFileListAsync(--pageNumber);
                 gridFiles.DataSource = gridData.FileDataTable(list);
                 btnPrevious.Enabled = list.HasPreviousPage;
                 btnNext.Enabled = list.HasNextPage;

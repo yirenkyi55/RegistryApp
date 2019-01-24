@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmModifyDepartment));
             this.bunifuDragControl1 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
+            this.header = new Bunifu.Framework.UI.BunifuCards();
+            this.lblModify = new System.Windows.Forms.Label();
+            this.btnClose = new Bunifu.Framework.UI.BunifuImageButton();
             this.label5 = new System.Windows.Forms.Label();
             this.txtAddress = new WindowsFormsControlLibrary1.BunifuCustomTextbox();
             this.txtEmail = new Bunifu.Framework.UI.BunifuMetroTextbox();
@@ -44,15 +47,12 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lblModify = new System.Windows.Forms.Label();
-            this.btnClose = new Bunifu.Framework.UI.BunifuImageButton();
-            this.header = new Bunifu.Framework.UI.BunifuCards();
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
+            this.header.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             this.bunifuCards1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
-            this.header.SuspendLayout();
             this.SuspendLayout();
             // 
             // bunifuDragControl1
@@ -61,6 +61,48 @@
             this.bunifuDragControl1.Horizontal = true;
             this.bunifuDragControl1.TargetControl = this.header;
             this.bunifuDragControl1.Vertical = true;
+            // 
+            // header
+            // 
+            this.header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.header.BorderRadius = 5;
+            this.header.BottomSahddow = true;
+            this.header.color = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(152)))), ((int)(((byte)(215)))));
+            this.header.Controls.Add(this.lblModify);
+            this.header.Controls.Add(this.btnClose);
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.LeftSahddow = false;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Name = "header";
+            this.header.RightSahddow = true;
+            this.header.ShadowDepth = 20;
+            this.header.Size = new System.Drawing.Size(334, 45);
+            this.header.TabIndex = 18;
+            // 
+            // lblModify
+            // 
+            this.lblModify.AutoSize = true;
+            this.lblModify.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblModify.ForeColor = System.Drawing.Color.White;
+            this.lblModify.Location = new System.Drawing.Point(11, 17);
+            this.lblModify.Name = "lblModify";
+            this.lblModify.Size = new System.Drawing.Size(53, 16);
+            this.lblModify.TabIndex = 2;
+            this.lblModify.Text = "Modify";
+            // 
+            // btnClose
+            // 
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.btnClose.Image = global::RegistryAppUI.Properties.Resources.Shutdown_;
+            this.btnClose.ImageActive = null;
+            this.btnClose.Location = new System.Drawing.Point(296, 10);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(29, 27);
+            this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnClose.TabIndex = 1;
+            this.btnClose.TabStop = false;
+            this.btnClose.Zoom = 10;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // label5
             // 
@@ -248,48 +290,6 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // lblModify
-            // 
-            this.lblModify.AutoSize = true;
-            this.lblModify.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblModify.ForeColor = System.Drawing.Color.White;
-            this.lblModify.Location = new System.Drawing.Point(11, 17);
-            this.lblModify.Name = "lblModify";
-            this.lblModify.Size = new System.Drawing.Size(53, 16);
-            this.lblModify.TabIndex = 2;
-            this.lblModify.Text = "Modify";
-            // 
-            // btnClose
-            // 
-            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.btnClose.Image = global::RegistryAppUI.Properties.Resources.Shutdown_;
-            this.btnClose.ImageActive = null;
-            this.btnClose.Location = new System.Drawing.Point(296, 10);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(29, 27);
-            this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.btnClose.TabIndex = 1;
-            this.btnClose.TabStop = false;
-            this.btnClose.Zoom = 10;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // header
-            // 
-            this.header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.header.BorderRadius = 5;
-            this.header.BottomSahddow = true;
-            this.header.color = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(152)))), ((int)(((byte)(215)))));
-            this.header.Controls.Add(this.lblModify);
-            this.header.Controls.Add(this.btnClose);
-            this.header.Dock = System.Windows.Forms.DockStyle.Top;
-            this.header.LeftSahddow = false;
-            this.header.Location = new System.Drawing.Point(0, 0);
-            this.header.Name = "header";
-            this.header.RightSahddow = true;
-            this.header.ShadowDepth = 20;
-            this.header.Size = new System.Drawing.Size(334, 45);
-            this.header.TabIndex = 18;
-            // 
             // bunifuElipse1
             // 
             this.bunifuElipse1.ElipseRadius = 5;
@@ -317,16 +317,17 @@
             this.Controls.Add(this.header);
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "frmModifyDepartment";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmModifyDepartment";
+            this.header.ResumeLayout(false);
+            this.header.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             this.bunifuCards1.ResumeLayout(false);
             this.bunifuCards1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
-            this.header.ResumeLayout(false);
-            this.header.PerformLayout();
             this.ResumeLayout(false);
 
         }

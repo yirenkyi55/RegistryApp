@@ -74,7 +74,6 @@
             this.switchGenerateReg = new Bunifu.Framework.UI.BunifuSwitch();
             this.dtpDateofLetter = new Bunifu.Framework.UI.BunifuDatepicker();
             this.dtpDateReceived = new Bunifu.Framework.UI.BunifuDatepicker();
-            this.label5 = new System.Windows.Forms.Label();
             this.txtFromDepartment = new Bunifu.Framework.UI.BunifuMetroTextbox();
             this.txtSubject = new Bunifu.Framework.UI.BunifuMetroTextbox();
             this.label10 = new System.Windows.Forms.Label();
@@ -88,6 +87,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
+            this.lblRegisteredFiles = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.header.SuspendLayout();
@@ -126,7 +126,7 @@
             this.header.Name = "header";
             this.header.RightSahddow = true;
             this.header.ShadowDepth = 20;
-            this.header.Size = new System.Drawing.Size(886, 45);
+            this.header.Size = new System.Drawing.Size(960, 45);
             this.header.TabIndex = 19;
             this.header.Paint += new System.Windows.Forms.PaintEventHandler(this.header_Paint);
             // 
@@ -146,9 +146,9 @@
             this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             this.btnClose.Image = global::RegistryAppUI.Properties.Resources.Shutdown_;
             this.btnClose.ImageActive = null;
-            this.btnClose.Location = new System.Drawing.Point(840, 9);
+            this.btnClose.Location = new System.Drawing.Point(910, 5);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(29, 27);
+            this.btnClose.Size = new System.Drawing.Size(46, 35);
             this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnClose.TabIndex = 1;
             this.btnClose.TabStop = false;
@@ -183,7 +183,6 @@
             this.panel1.Controls.Add(this.switchGenerateReg);
             this.panel1.Controls.Add(this.dtpDateofLetter);
             this.panel1.Controls.Add(this.dtpDateReceived);
-            this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.txtFromDepartment);
             this.panel1.Controls.Add(this.txtSubject);
             this.panel1.Controls.Add(this.label10);
@@ -197,11 +196,12 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label13);
+            this.panel1.Controls.Add(this.lblRegisteredFiles);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 45);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(886, 546);
+            this.panel1.Size = new System.Drawing.Size(960, 595);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -214,7 +214,7 @@
             this.btnDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(6)))), ((int)(((byte)(17)))));
-            this.btnDelete.Location = new System.Drawing.Point(467, 502);
+            this.btnDelete.Location = new System.Drawing.Point(467, 546);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(164, 30);
             this.btnDelete.TabIndex = 33;
@@ -231,7 +231,7 @@
             this.btnUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(143)))), ((int)(((byte)(182)))));
             this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(202)))), ((int)(((byte)(254)))));
-            this.btnUpdate.Location = new System.Drawing.Point(274, 503);
+            this.btnUpdate.Location = new System.Drawing.Point(274, 547);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(164, 30);
             this.btnUpdate.TabIndex = 33;
@@ -244,7 +244,7 @@
             this.btnNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(152)))), ((int)(((byte)(215)))));
             this.btnNext.Image = global::RegistryAppUI.Properties.Resources.next;
             this.btnNext.ImageActive = null;
-            this.btnNext.Location = new System.Drawing.Point(773, 49);
+            this.btnNext.Location = new System.Drawing.Point(839, 48);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(41, 21);
             this.btnNext.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -258,7 +258,7 @@
             this.btnPrevious.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(152)))), ((int)(((byte)(215)))));
             this.btnPrevious.Image = global::RegistryAppUI.Properties.Resources.backward;
             this.btnPrevious.ImageActive = null;
-            this.btnPrevious.Location = new System.Drawing.Point(713, 49);
+            this.btnPrevious.Location = new System.Drawing.Point(779, 48);
             this.btnPrevious.Name = "btnPrevious";
             this.btnPrevious.Size = new System.Drawing.Size(41, 21);
             this.btnPrevious.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -272,7 +272,7 @@
             this.btnRegistrySearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(152)))), ((int)(((byte)(215)))));
             this.btnRegistrySearch.Image = global::RegistryAppUI.Properties.Resources.find;
             this.btnRegistrySearch.ImageActive = null;
-            this.btnRegistrySearch.Location = new System.Drawing.Point(820, 8);
+            this.btnRegistrySearch.Location = new System.Drawing.Point(886, 7);
             this.btnRegistrySearch.Name = "btnRegistrySearch";
             this.btnRegistrySearch.Size = new System.Drawing.Size(31, 32);
             this.btnRegistrySearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -285,7 +285,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
-            this.label16.Location = new System.Drawing.Point(394, 396);
+            this.label16.Location = new System.Drawing.Point(396, 443);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(15, 20);
             this.label16.TabIndex = 30;
@@ -304,10 +304,10 @@
             this.txtRegistrySearch.LineIdleColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(152)))), ((int)(((byte)(215)))));
             this.txtRegistrySearch.LineMouseHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(152)))), ((int)(((byte)(215)))));
             this.txtRegistrySearch.LineThickness = 2;
-            this.txtRegistrySearch.Location = new System.Drawing.Point(685, 9);
+            this.txtRegistrySearch.Location = new System.Drawing.Point(710, 8);
             this.txtRegistrySearch.Margin = new System.Windows.Forms.Padding(4);
             this.txtRegistrySearch.Name = "txtRegistrySearch";
-            this.txtRegistrySearch.Size = new System.Drawing.Size(135, 31);
+            this.txtRegistrySearch.Size = new System.Drawing.Size(176, 31);
             this.txtRegistrySearch.TabIndex = 31;
             this.txtRegistrySearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtRegistrySearch.OnValueChanged += new System.EventHandler(this.txtRegistrySearch_OnValueChanged);
@@ -338,7 +338,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
-            this.label17.Location = new System.Drawing.Point(824, 105);
+            this.label17.Location = new System.Drawing.Point(928, 105);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(15, 20);
             this.label17.TabIndex = 30;
@@ -370,7 +370,7 @@
             this.bunifuCards2.Controls.Add(this.label12);
             this.bunifuCards2.Controls.Add(this.btnPdf);
             this.bunifuCards2.LeftSahddow = false;
-            this.bunifuCards2.Location = new System.Drawing.Point(536, 343);
+            this.bunifuCards2.Location = new System.Drawing.Point(599, 366);
             this.bunifuCards2.Name = "bunifuCards2";
             this.bunifuCards2.RightSahddow = true;
             this.bunifuCards2.ShadowDepth = 20;
@@ -489,7 +489,7 @@
             this.bunifuCards1.Controls.Add(this.panel2);
             this.bunifuCards1.Controls.Add(this.btnAddDepartments);
             this.bunifuCards1.LeftSahddow = false;
-            this.bunifuCards1.Location = new System.Drawing.Point(607, 148);
+            this.bunifuCards1.Location = new System.Drawing.Point(670, 148);
             this.bunifuCards1.Name = "bunifuCards1";
             this.bunifuCards1.RightSahddow = true;
             this.bunifuCards1.ShadowDepth = 20;
@@ -591,18 +591,18 @@
             // 
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel5.Location = new System.Drawing.Point(10, 536);
+            this.panel5.Location = new System.Drawing.Point(10, 585);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(866, 10);
+            this.panel5.Size = new System.Drawing.Size(940, 10);
             this.panel5.TabIndex = 29;
             // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel4.Location = new System.Drawing.Point(876, 0);
+            this.panel4.Location = new System.Drawing.Point(950, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(10, 546);
+            this.panel4.Size = new System.Drawing.Size(10, 595);
             this.panel4.TabIndex = 29;
             // 
             // panel3
@@ -611,7 +611,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(10, 546);
+            this.panel3.Size = new System.Drawing.Size(10, 595);
             this.panel3.TabIndex = 29;
             this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
             // 
@@ -619,7 +619,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.label11.Location = new System.Drawing.Point(483, 183);
+            this.label11.Location = new System.Drawing.Point(546, 183);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(120, 20);
             this.label11.TabIndex = 17;
@@ -643,7 +643,7 @@
             this.btnReset.IdleFillColor = System.Drawing.Color.White;
             this.btnReset.IdleForecolor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
             this.btnReset.IdleLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
-            this.btnReset.Location = new System.Drawing.Point(393, 459);
+            this.btnReset.Location = new System.Drawing.Point(393, 493);
             this.btnReset.Margin = new System.Windows.Forms.Padding(5);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(178, 41);
@@ -669,7 +669,7 @@
             this.btnSave.IdleFillColor = System.Drawing.Color.White;
             this.btnSave.IdleForecolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             this.btnSave.IdleLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.btnSave.Location = new System.Drawing.Point(179, 459);
+            this.btnSave.Location = new System.Drawing.Point(179, 493);
             this.btnSave.Margin = new System.Windows.Forms.Padding(5);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(178, 41);
@@ -686,6 +686,7 @@
             this.linkLabel1.TabIndex = 26;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Convert Images To Pdf?";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // btnDepartments
             // 
@@ -705,7 +706,7 @@
             this.btnDepartments.IdleFillColor = System.Drawing.Color.White;
             this.btnDepartments.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnDepartments.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnDepartments.Location = new System.Drawing.Point(592, 459);
+            this.btnDepartments.Location = new System.Drawing.Point(592, 493);
             this.btnDepartments.Margin = new System.Windows.Forms.Padding(5);
             this.btnDepartments.Name = "btnDepartments";
             this.btnDepartments.Size = new System.Drawing.Size(178, 41);
@@ -717,12 +718,12 @@
             // 
             this.txtRemarks.BackColor = System.Drawing.Color.White;
             this.txtRemarks.BorderColor = System.Drawing.Color.SeaGreen;
-            this.txtRemarks.Location = new System.Drawing.Point(610, 258);
+            this.txtRemarks.Location = new System.Drawing.Point(673, 275);
             this.txtRemarks.MaxLength = 200;
             this.txtRemarks.Multiline = true;
             this.txtRemarks.Name = "txtRemarks";
             this.txtRemarks.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtRemarks.Size = new System.Drawing.Size(209, 75);
+            this.txtRemarks.Size = new System.Drawing.Size(251, 75);
             this.txtRemarks.TabIndex = 8;
             // 
             // switchGenerateReg
@@ -740,6 +741,7 @@
             this.switchGenerateReg.TabIndex = 23;
             this.switchGenerateReg.Textcolor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.switchGenerateReg.Value = true;
+            this.switchGenerateReg.Visible = false;
             this.switchGenerateReg.Click += new System.EventHandler(this.switchGenerateReg_Click);
             // 
             // dtpDateofLetter
@@ -772,16 +774,6 @@
             this.dtpDateReceived.TabIndex = 1;
             this.dtpDateReceived.Value = new System.DateTime(2018, 12, 4, 14, 44, 39, 259);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
-            this.label5.Location = new System.Drawing.Point(636, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(15, 20);
-            this.label5.TabIndex = 19;
-            this.label5.Text = "*";
-            // 
             // txtFromDepartment
             // 
             this.txtFromDepartment.BackColor = System.Drawing.Color.White;
@@ -793,10 +785,10 @@
             this.txtFromDepartment.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.txtFromDepartment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtFromDepartment.isPassword = false;
-            this.txtFromDepartment.Location = new System.Drawing.Point(612, 99);
+            this.txtFromDepartment.Location = new System.Drawing.Point(675, 99);
             this.txtFromDepartment.Margin = new System.Windows.Forms.Padding(4);
             this.txtFromDepartment.Name = "txtFromDepartment";
-            this.txtFromDepartment.Size = new System.Drawing.Size(208, 30);
+            this.txtFromDepartment.Size = new System.Drawing.Size(249, 30);
             this.txtFromDepartment.TabIndex = 6;
             this.txtFromDepartment.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
@@ -811,7 +803,7 @@
             this.txtSubject.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.txtSubject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtSubject.isPassword = false;
-            this.txtSubject.Location = new System.Drawing.Point(170, 390);
+            this.txtSubject.Location = new System.Drawing.Point(172, 437);
             this.txtSubject.Margin = new System.Windows.Forms.Padding(4);
             this.txtSubject.Name = "txtSubject";
             this.txtSubject.Size = new System.Drawing.Size(220, 30);
@@ -823,7 +815,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.label10.Location = new System.Drawing.Point(534, 273);
+            this.label10.Location = new System.Drawing.Point(597, 290);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(74, 20);
             this.label10.TabIndex = 17;
@@ -833,7 +825,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.label9.Location = new System.Drawing.Point(414, 104);
+            this.label9.Location = new System.Drawing.Point(477, 104);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(196, 20);
             this.label9.TabIndex = 17;
@@ -850,7 +842,7 @@
             this.txtReferenceNumber.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.txtReferenceNumber.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtReferenceNumber.isPassword = false;
-            this.txtReferenceNumber.Location = new System.Drawing.Point(170, 324);
+            this.txtReferenceNumber.Location = new System.Drawing.Point(169, 343);
             this.txtReferenceNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtReferenceNumber.Name = "txtReferenceNumber";
             this.txtReferenceNumber.Size = new System.Drawing.Size(220, 30);
@@ -862,7 +854,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.label7.Location = new System.Drawing.Point(100, 396);
+            this.label7.Location = new System.Drawing.Point(101, 443);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(67, 20);
             this.label7.TabIndex = 17;
@@ -891,7 +883,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.label1.Location = new System.Drawing.Point(14, 329);
+            this.label1.Location = new System.Drawing.Point(14, 349);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(153, 20);
             this.label1.TabIndex = 17;
@@ -908,7 +900,7 @@
             this.txtRegistryNumber.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.txtRegistryNumber.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtRegistryNumber.isPassword = false;
-            this.txtRegistryNumber.Location = new System.Drawing.Point(411, 9);
+            this.txtRegistryNumber.Location = new System.Drawing.Point(411, 11);
             this.txtRegistryNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtRegistryNumber.Name = "txtRegistryNumber";
             this.txtRegistryNumber.Size = new System.Drawing.Size(220, 30);
@@ -955,12 +947,24 @@
             this.label13.Size = new System.Drawing.Size(124, 20);
             this.label13.TabIndex = 15;
             this.label13.Text = "Auto Generate:";
+            this.label13.Visible = false;
+            // 
+            // lblRegisteredFiles
+            // 
+            this.lblRegisteredFiles.AutoSize = true;
+            this.lblRegisteredFiles.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRegisteredFiles.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(150)))));
+            this.lblRegisteredFiles.Location = new System.Drawing.Point(26, 44);
+            this.lblRegisteredFiles.Name = "lblRegisteredFiles";
+            this.lblRegisteredFiles.Size = new System.Drawing.Size(26, 18);
+            this.lblRegisteredFiles.TabIndex = 15;
+            this.lblRegisteredFiles.Text = "<>";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.label2.Location = new System.Drawing.Point(277, 14);
+            this.label2.Location = new System.Drawing.Point(277, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(131, 20);
             this.label2.TabIndex = 15;
@@ -975,11 +979,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.ClientSize = new System.Drawing.Size(886, 591);
+            this.ClientSize = new System.Drawing.Size(960, 640);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.header);
             this.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "frmFile";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1016,7 +1021,6 @@
         private System.Windows.Forms.Panel panel1;
         private Bunifu.Framework.UI.BunifuDatepicker dtpDateofLetter;
         private Bunifu.Framework.UI.BunifuDatepicker dtpDateReceived;
-        private System.Windows.Forms.Label label5;
         private Bunifu.Framework.UI.BunifuMetroTextbox txtReferenceNumber;
         private Bunifu.Framework.UI.BunifuMetroTextbox txtPersonSent;
         private System.Windows.Forms.Label label1;
@@ -1069,5 +1073,6 @@
         private Bunifu.Framework.UI.BunifuCards bunifuCards2;
         private Bunifu.Framework.UI.BunifuMetroTextbox txtFileName;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label lblRegisteredFiles;
     }
 }

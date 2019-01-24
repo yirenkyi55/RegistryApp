@@ -13,6 +13,11 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// The user full name
+        /// </summary>
+        public string FullName { get; set; }
+
+        /// <summary>
         /// The password of the user
         /// </summary>
         public string Password { get; set; }

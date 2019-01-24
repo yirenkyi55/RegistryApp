@@ -15,11 +15,15 @@ namespace RegistryAppUI
     {
         private string fileName = null;
         private FileSettings _fileSettings;
-        public frmUpdatePdf(FileSettings fileSettings)
+        public  bool PrintFile { get; set; } 
+
+        public frmUpdatePdf(FileSettings fileSettings, bool print=false)
         {
             InitializeComponent();
             _fileSettings = fileSettings;
+            PrintFile = print;
             LoadFile();
+       
         }
 
         private void LoadFile()
@@ -27,6 +31,14 @@ namespace RegistryAppUI
             if (_fileSettings!=null)
             {
                 axAcroPDF1.src = _fileSettings.GetFileLocation();
+            }
+
+            if (PrintFile)
+            {
+                btnAddFile.Visible = false;
+                btnBrowse.Visible = false;
+                btnDone.Visible = true;
+                lblModify.Text = "View Pdf";
             }
         }
         private void btnClose_Click(object sender, EventArgs e)
@@ -40,9 +52,17 @@ namespace RegistryAppUI
             {
                 if (opfd.ShowDialog() == DialogResult.OK)
                 {
-                    axAcroPDF1.src = opfd.FileName;
-                    lblFileName.Text = opfd.FileName;
-                    fileName = opfd.FileName;
+                    try
+                    {
+                        axAcroPDF1.src = opfd.FileName;
+                        lblFileName.Text = opfd.FileName;
+                        fileName = opfd.FileName;
+                    }
+                    catch (Exception ex)
+                    {
+
+                        MessageBox.Show($"Sorry an error occured. \n {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
@@ -59,6 +79,11 @@ namespace RegistryAppUI
                 this.Close();
             }
            
+        }
+
+        private void btnDone_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
